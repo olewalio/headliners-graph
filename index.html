@@ -9,7 +9,7 @@ h1 { color:#c084fc; text-align:center; }
 a { color:#60a5fa; }
 </style></head><body>
 <h1>🏛 Хедлайнеры — карта взаимосвязей</h1>
-<p class="desc">🔴 9 бирж · ⚪ 1 инструментов · 🟣 43 конкурентов · Только данные из БД</p>
+<p class="desc">🔴 8 бирж · ⚪ 2 инструментов · 🟣 43 конкурентов</p>
 <div id="graph" class="mermaid">graph TD
     classDef exchange fill:#f87171,stroke:#dc2626,color:#000
     classDef tool fill:#d1d5db,stroke:#6b7280,color:#000
@@ -23,12 +23,12 @@ a { color:#60a5fa; }
     CoinW["CoinW"]
     Gate.io["Gate.io"]
     OKX["OKX"]
-    UTEX["UTEX"]
     WhiteBIT["WhiteBIT"]
     end
 
     subgraph ИНСТРУМЕНТЫ
     HashHedge["HashHedge"]
+    UTEX["UTEX"]
     end
 
     subgraph КОНКУРЕНТЫ
@@ -148,9 +148,9 @@ a { color:#60a5fa; }
     class CoinW exchange
     class Gate.io exchange
     class OKX exchange
-    class UTEX exchange
     class WhiteBIT exchange
     class HashHedge tool
+    class UTEX tool
     class Altcoin Trading Signals competitor
     class BREIDO Trade competitor
     class Bondar Scalp competitor
