@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html><head><meta charset="UTF-8">
-<title>Хедлайнеры — карта взаимосвязей (depth=2)</title>
+<title>Хедлайнеры — карта связей</title>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <style>
-body { background:#1a1a2e; color:#e0e0e0; font-family:Arial,sans-serif; margin:0; padding:20px; }
+body { background:#1a1a2e; color:#e0e0e0; font-family:Arial,sans-serif; }
 h1 { color:#c084fc; text-align:center; }
 .desc { text-align:center; color:#888; font-size:14px; }
 #graph { background:#16213e; border-radius:8px; padding:20px; overflow:auto; }
@@ -11,7 +11,7 @@ a { color:#60a5fa; }
 </style>
 </head><body>
 <h1>🏛 Хедлайнеры — карта взаимосвязей</h1>
-<p class="desc">🔴 Биржи · ⚪ Инструменты · 🟣 Конкуренты · depth=2 (только прямые связи)</p>
+<p class="desc">🔴 Биржи → ⚪ Инструменты → 🟣 Конкуренты</p>
 <div id="graph" class="mermaid">graph TD
     classDef exchange fill:#f87171,stroke:#dc2626,color:#000
     classDef tool fill:#d1d5db,stroke:#6b7280,color:#000
@@ -47,6 +47,7 @@ a { color:#60a5fa; }
 
     subgraph КОНКУРЕНТЫ
     Headliners["📰 Headliners"]
+    Nikita_Anufriev["👤 Nikita Anufriev"]
     Headliners_YouTube_Main["📦 Headliners YouTube Main"]
     Headliners_TradeLab["📦 Headliners TradeLab"]
     Headliners_Crypto_TG["📦 Headliners Crypto TG"]
@@ -160,29 +161,29 @@ a { color:#60a5fa; }
     Kirill_Evans-->|subdomain|Evans_Crypto_TG
     Kirill_Evans-->|subdomain|cryptocommunity_ai
     Kirill_Evans-->|subdomain|kirillevans_com
-    Kirill_Evans-->|partner|Binance
+    |partner|Binance ['', 'partner', 'Binance'] Kirill_Evans
     Kirill_Evans-->|subdomain|dust_link
     Kirill_Evans-->|subdomain|MicronCryptoBot
     Roman_Tomera-->|subdomain|CrypTomera_TG
-    Roman_Tomera-->|partner|OKX
-    Roman_Tomera-->|partner|Binance
-    Roman_Tomera-->|partner|Bybit
+    |partner|OKX ['', 'partner', 'OKX'] Roman_Tomera
+    |partner|Binance ['', 'partner', 'Binance'] Roman_Tomera
+    |partner|Bybit ['', 'partner', 'Bybit'] Roman_Tomera
     PRO_BLOCKCHAIN-->|subdomain|XXXHunters_bot
     PRO_BLOCKCHAIN-->|subdomain|Pro_Block_Bot
-    PRO_BLOCKCHAIN-->|partner|Bybit
-    PRO_BLOCKCHAIN-->|partner|BingX
+    |partner|Bybit ['', 'partner', 'Bybit'] PRO_BLOCKCHAIN
+    |partner|BingX ['', 'partner', 'BingX'] PRO_BLOCKCHAIN
     SLEZY_SATOSHI-->|subdomain|SleziSatoshi_TG
-    SLEZY_SATOSHI-->|partner|Bitget
+    |partner|Bitget ['', 'partner', 'Bitget'] SLEZY_SATOSHI
     RDeni-->|subdomain|crypto_rostik_TG
-    RDeni-->|partner|WhiteBIT
-    Crypto_Falcon-->|partner|Bybit
+    |partner|WhiteBIT ['', 'partner', 'WhiteBIT'] RDeni
+    |partner|Bybit ['', 'partner', 'Bybit'] Crypto_Falcon
     Дневник_активов-->|partner|Bybit
     Дневник_активов-->|partner|Binance
-    Cryptology_Education-->|partner|OKX
-    Prometheus_Bitcoin-->|partner|Binance
-    DOUBLETOP-->|partner|Binance
-    CryptoFateev-->|partner|Binance
-    CryptoInside-->|partner|Binance
+    |partner|OKX ['', 'partner', 'OKX'] Cryptology_Education
+    |partner|Binance ['', 'partner', 'Binance'] Prometheus_Bitcoin
+    |partner|Binance ['', 'partner', 'Binance'] DOUBLETOP
+    |partner|Binance ['', 'partner', 'Binance'] CryptoFateev
+    |partner|Binance ['', 'partner', 'Binance'] CryptoInside
 
 class Headliners type_media
 class headlinerslinks_com type_other
