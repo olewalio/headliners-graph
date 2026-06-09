@@ -2,19 +2,19 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Хедлайнеры — карта взаимосвязей</title>
+<title>Хедлайнеры — карта связей</title>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <style>
-  body { background: #1a1a2e; color: #e0e0e0; font-family: Arial, sans-serif; margin: 0; padding: 20px; }
-  h1 { color: #c084fc; text-align: center; }
-  .desc { text-align: center; color: #888; font-size: 14px; margin-bottom: 20px; }
-  #graph { background: #16213e; border-radius: 8px; padding: 20px; overflow-x: auto; }
-  a { color: #60a5fa; }
+body { background:#1a1a2e; color:#e0e0e0; font-family:Arial,sans-serif; margin:0; padding:20px; }
+h1 { color:#c084fc; text-align:center; }
+.desc { text-align:center; color:#888; font-size:14px; }
+#graph { background:#16213e; border-radius:8px; padding:20px; overflow:auto; }
+a { color:#60a5fa; }
 </style>
 </head>
 <body>
-<h1>🏛️ Хедлайнеры — полная карта взаимосвязей</h1>
-<p class="desc">60 сущностей · 153 связи · Потрёры · Конкуренты · Инструменты · Воронки</p>
+<h1>🏛 Хедлайнеры — карта взаимосвязей</h1>
+<p class="desc">80 сущностей · 45 конкурентов · 193 связи · Партнёры · Инструменты</p>
 <div id="graph" class="mermaid">
 graph LR
 
@@ -35,18 +35,38 @@ graph LR
     ForkLog["📰 ForkLog"]
     Wyckoff_Company["🏢 Wyckoff Company"]
     CryptoCapo_TG["📰 CryptoCapo TG"]
-    Crypto_Signals_VIP["📰 Crypto Signals VIP"]
     Cryptology_Education["📰 Cryptology Education"]
     CRYPTUS_MEDIA["📰 CRYPTUS MEDIA"]
     SLEZY_SATOSHI["📰 SLEZY SATOSHI"]
     Дневник_активов["📰 Дневник активов"]
-    SerCrypto_channel["📰 SerCrypto channel"]
     Prometheus_Bitcoin["📰 Prometheus Bitcoin"]
     UTEX["🏛️ UTEX"]
     Crypto_Falcon["📰 Crypto Falcon"]
+    Crypto_Signals_VIP["📰 Crypto Signals VIP"]
+    SerCrypto_channel["📰 SerCrypto channel"]
     DOUBLETOP["📰 DOUBLETOP"]
     CRYPTOR_BLOG["📰 CRYPTOR BLOG"]
     CryptoInside["📰 CryptoInside"]
+    BREIDO_Trade["📰 BREIDO Trade"]
+    Bondar_Scalp["📰 Bondar Scalp"]
+    Crypto_Scalp_Signals["📰 Crypto Scalp Signals"]
+    ProBoy_Scalp["📰 ProBoy Scalp"]
+    Skalping_DIGAHKA["📰 Skalping DIGAHKA"]
+    TAIP_Trade["📰 TAIP Trade"]
+    Altcoin_Trading_Signals["📰 Altcoin Trading Signals"]
+    Crypto_Signal_Hub["📰 Crypto Signal Hub"]
+    Trader_signals_RU["📰 Trader signals RU"]
+    Drazor["📰 Drazor"]
+    Gerchik_Trading_Ecosystem["📰 Gerchik Trading Ecosystem"]
+    INSTARDING["📰 INSTARDING"]
+    Peersynth_Trader["📰 Peersynth Trader"]
+    Vokari["📰 Vokari"]
+    Биржевик_Акции["📰 Биржевик Акции"]
+    Илья_Коровин["📰 Илья Коровин"]
+    Мемы_от_трейдеров["📰 Мемы от трейдеров"]
+    Сигналы_МосБиржа["📰 Сигналы МосБиржа"]
+    Центр_Прорыва["📰 Центр Прорыва"]
+    Школа_трейдинга_Ерина_Романа["📰 Школа трейдинга Ерина Романа"]
     CryptoFateev["📰 CryptoFateev"]
     Mamkin_Trader["📰 Mamkin Trader"]
     Tomas_Kralov["👤 Tomas Kralov"]
@@ -103,18 +123,38 @@ graph LR
     class ForkLog type_media
     class Wyckoff_Company type_organization
     class CryptoCapo_TG type_media
-    class Crypto_Signals_VIP type_media
     class Cryptology_Education type_media
     class CRYPTUS_MEDIA type_media
     class SLEZY_SATOSHI type_media
     class Дневник_активов type_media
-    class SerCrypto_channel type_media
     class Prometheus_Bitcoin type_media
     class UTEX type_exchange
     class Crypto_Falcon type_media
+    class Crypto_Signals_VIP type_media
+    class SerCrypto_channel type_media
     class DOUBLETOP type_media
     class CRYPTOR_BLOG type_media
     class CryptoInside type_media
+    class BREIDO_Trade type_media
+    class Bondar_Scalp type_media
+    class Crypto_Scalp_Signals type_media
+    class ProBoy_Scalp type_media
+    class Skalping_DIGAHKA type_media
+    class TAIP_Trade type_media
+    class Altcoin_Trading_Signals type_media
+    class Crypto_Signal_Hub type_media
+    class Trader_signals_RU type_media
+    class Drazor type_media
+    class Gerchik_Trading_Ecosystem type_media
+    class INSTARDING type_media
+    class Peersynth_Trader type_media
+    class Vokari type_media
+    class Биржевик_Акции type_media
+    class Илья_Коровин type_media
+    class Мемы_от_трейдеров type_media
+    class Сигналы_МосБиржа type_media
+    class Центр_Прорыва type_media
+    class Школа_трейдинга_Ерина_Романа type_media
     class CryptoFateev type_media
     class Mamkin_Trader type_media
     class Tomas_Kralov type_person
@@ -166,19 +206,39 @@ graph LR
     Headliners-->|competitor|RDeni
     Headliners-->|competitor|Wyckoff_Company
     Headliners-->|competitor|CryptoCapo_TG
-    Headliners-->|competitor|Crypto_Signals_VIP
     Headliners-->|competitor|Cryptology_Education
     Headliners-->|competitor|CRYPTUS_MEDIA
     PRO_BLOCKCHAIN-->|competitor|Headliners
     SLEZY_SATOSHI-->|competitor|Headliners
     Headliners-->|competitor|Дневник_активов
-    Headliners-->|competitor|SerCrypto_channel
     Headliners-->|competitor|Prometheus_Bitcoin
     Headliners-->|partner|UTEX
     Headliners-->|competitor|Crypto_Falcon
+    Headliners-->|competitor|Crypto_Signals_VIP
+    Headliners-->|competitor|SerCrypto_channel
     Headliners-->|competitor|DOUBLETOP
     Headliners-->|competitor|CRYPTOR_BLOG
     Headliners-->|competitor|CryptoInside
+    Headliners-->|competitor|BREIDO_Trade
+    Headliners-->|competitor|Bondar_Scalp
+    Headliners-->|competitor|Crypto_Scalp_Signals
+    Headliners-->|competitor|ProBoy_Scalp
+    Headliners-->|competitor|Skalping_DIGAHKA
+    Headliners-->|competitor|TAIP_Trade
+    Headliners-->|competitor|Altcoin_Trading_Signals
+    Headliners-->|competitor|Crypto_Signal_Hub
+    Headliners-->|competitor|Trader_signals_RU
+    Headliners-->|competitor|Drazor
+    Headliners-->|competitor|Gerchik_Trading_Ecosystem
+    Headliners-->|competitor|INSTARDING
+    Headliners-->|competitor|Peersynth_Trader
+    Headliners-->|competitor|Vokari
+    Headliners-->|competitor|Биржевик_Акции
+    Headliners-->|competitor|Илья_Коровин
+    Headliners-->|competitor|Мемы_от_трейдеров
+    Headliners-->|competitor|Сигналы_МосБиржа
+    Headliners-->|competitor|Центр_Прорыва
+    Headliners-->|competitor|Школа_трейдинга_Ерина_Романа
     Headliners-.->|competitor|CryptoFateev
     Headliners-.->|competitor|Mamkin_Trader
     Headliners-.->|competitor|Tomas_Kralov
@@ -233,6 +293,6 @@ graph LR
 
 
 </div>
-<p class="desc" style="margin-top:20px">🔥 Обновлено: 09.06.2026 | <a href="https://github.com/olewalio/headliners-graph">GitHub</a></p>
+<p class="desc"><a href="https://olewalio.github.io/headliners-graph/">GitHub Pages</a></p>
 </body>
 </html>
