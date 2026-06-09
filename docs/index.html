@@ -1,31 +1,23 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Хедлайнеры — карта связей</title>
+<html><head><meta charset="UTF-8">
+<title>Хедлайнеры — карта взаимосвязей</title>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <style>
 body { background:#1a1a2e; color:#e0e0e0; font-family:Arial,sans-serif; margin:0; padding:20px; }
 h1 { color:#c084fc; text-align:center; }
-.desc { text-align:center; color:#888; font-size:14px; margin-bottom:20px; }
+.desc { text-align:center; color:#888; font-size:14px; }
 #graph { background:#16213e; border-radius:8px; padding:20px; overflow:auto; }
 a { color:#60a5fa; }
 </style>
-</head>
-<body>
+</head><body>
 <h1>🏛 Хедлайнеры — карта взаимосвязей</h1>
-<p class="desc">
-🔴 Биржи · ⚪ Инструменты · 🟢 Инфраструктура · 🟣 Конкуренты · 80 узлов · 193 связи
-</p>
-<div id="graph" class="mermaid">
-graph TD
-    %% СТИЛИ
+<p class="desc">🔴 Биржи · ⚪ Инструменты · 🟢 Инфраструктура · 🟣 Конкуренты · 🩷 Люди</p>
+<div id="graph" class="mermaid">graph TD
     classDef exchange fill:#f87171,stroke:#dc2626,color:#000
     classDef tool fill:#d1d5db,stroke:#6b7280,color:#000
     classDef infra fill:#34d399,stroke:#059669,color:#000
     classDef competitor fill:#c084fc,stroke:#9333ea,color:#000
     classDef person fill:#f472b6,stroke:#be185d,color:#000
-    classDef project fill:#60a5fa,stroke:#2563eb,color:#000
 
     subgraph БИРЖИ
     CoinW["🏢 CoinW"]
@@ -37,15 +29,18 @@ graph TD
     BingX["🏛️ BingX"]
     Bitget["🏛️ Bitget"]
     WhiteBIT["🏛️ WhiteBIT"]
-    Coinbase["🏛️ Coinbase"]
-    Kraken["🏛️ Kraken"]
     end
 
     subgraph ИНСТРУМЕНТЫ И СЕРВИСЫ
     headlinerslinks_com["📦 headlinerslinks.com"]
     headliners_traders_bot["📦 headliners_traders_bot"]
+    nainspire_TG["📦 nainspire TG"]
+    HashHedge["🔧 HashHedge"]
+    PRO_BLOCKCHAIN["📰 PRO BLOCKCHAIN"]
+    CoinW_Telegram["📦 CoinW Telegram"]
     cryptocommunity_ai["📦 cryptocommunity.ai"]
     kirillevans_com["📦 kirillevans.com"]
+    dust_link["📦 dust.link"]
     MicronCryptoBot["📦 MicronCryptoBot"]
     XXXHunters_bot["📦 XXXHunters_bot"]
     Pro_Block_Bot["📦 Pro_Block_Bot"]
@@ -53,6 +48,7 @@ graph TD
 
     subgraph ИНФРАСТРУКТУРА
     Prometheus_Bitcoin["📰 Prometheus Bitcoin"]
+    Coinbase["🏛️ Coinbase"]
     Bitcoin["⛓️ Bitcoin"]
     Ethereum["⛓️ Ethereum"]
     Base["⛓️ Base"]
@@ -62,20 +58,12 @@ graph TD
     Near["⛓️ Near"]
     end
 
-    subgraph ЛЮДИ
-    Nikita_Anufriev["👤 Nikita Anufriev"]
-    Cz["👤 Cz"]
-    end
-
-    subgraph КОНКУРЕНТЫ И ХЕДЛАЙНЕРЫ
+    subgraph КОНКУРЕНТЫ
     Headliners["📰 Headliners"]
     Headliners_YouTube_Main["📦 Headliners YouTube Main"]
     Headliners_TradeLab["📦 Headliners TradeLab"]
-    nainspire_TG["📦 nainspire TG"]
     Headliners_Crypto_TG["📦 Headliners Crypto TG"]
-    HashHedge["🔧 HashHedge"]
     Kirill_Evans["📰 Kirill Evans"]
-    PRO_BLOCKCHAIN["📰 PRO BLOCKCHAIN"]
     Roman_Tomera["📰 Roman Tomera"]
     RDeni["📰 RDeni"]
     ForkLog["📰 ForkLog"]
@@ -116,13 +104,13 @@ graph TD
     Tomas_Kralov["👤 Tomas Kralov"]
     headIinersadmin["📦 headIinersadmin"]
     Evans_Crypto_TG["📦 Evans Crypto TG"]
-    dust_link["📦 dust.link"]
     CrypTomera_TG["📦 CrypTomera TG"]
     SleziSatoshi_TG["📦 SleziSatoshi TG"]
     crypto_rostik_TG["📦 crypto_rostik TG"]
+    Cz["👤 Cz"]
+    Kraken["🏛️ Kraken"]
     end
 
-    %% СВЯЗИ
     Headliners-->|subdomain|headlinerslinks_com
     Headliners-->|subdomain|headliners_traders_bot
     Nikita_Anufriev-->|founder|Headliners
@@ -224,168 +212,86 @@ graph TD
     Near-->|mentioned_in|Bybit
     Kraken-->|mentioned_in|Bybit
 
-    class Headliners type_media
-    class headlinerslinks_com type_other
-    class headliners_traders_bot type_other
-    class Nikita_Anufriev type_person
-    class Headliners_YouTube_Main type_other
-    class Headliners_TradeLab type_other
-    class nainspire_TG type_other
-    class Headliners_Crypto_TG type_other
-    class HashHedge type_project
-    class Kirill_Evans type_media
-    class CoinW type_organization
-    class PRO_BLOCKCHAIN type_media
-    class Roman_Tomera type_media
-    class RDeni type_media
-    class ForkLog type_media
-    class Wyckoff_Company type_organization
-    class CryptoCapo_TG type_media
-    class Cryptology_Education type_media
-    class CRYPTUS_MEDIA type_media
-    class SLEZY_SATOSHI type_media
-    class Дневник_активов type_media
-    class Prometheus_Bitcoin type_media
-    class UTEX type_exchange
-    class Crypto_Falcon type_media
-    class Crypto_Signals_VIP type_media
-    class SerCrypto_channel type_media
-    class DOUBLETOP type_media
-    class CRYPTOR_BLOG type_media
-    class CryptoInside type_media
-    class BREIDO_Trade type_media
-    class Bondar_Scalp type_media
-    class Crypto_Scalp_Signals type_media
-    class ProBoy_Scalp type_media
-    class Skalping_DIGAHKA type_media
-    class TAIP_Trade type_media
-    class Altcoin_Trading_Signals type_media
-    class Crypto_Signal_Hub type_media
-    class Trader_signals_RU type_media
-    class Drazor type_media
-    class Gerchik_Trading_Ecosystem type_media
-    class INSTARDING type_media
-    class Peersynth_Trader type_media
-    class Vokari type_media
-    class Биржевик_Акции type_media
-    class Илья_Коровин type_media
-    class Мемы_от_трейдеров type_media
-    class Сигналы_МосБиржа type_media
-    class Центр_Прорыва type_media
-    class Школа_трейдинга_Ерина_Романа type_media
-    class CryptoFateev type_media
-    class Mamkin_Trader type_media
-    class Tomas_Kralov type_person
-    class CoinW_Telegram type_other
-    class headIinersadmin type_other
-    class Evans_Crypto_TG type_other
-    class cryptocommunity_ai type_other
-    class kirillevans_com type_other
-    class Binance type_exchange
-    class dust_link type_other
-    class MicronCryptoBot type_other
-    class CrypTomera_TG type_other
-    class OKX type_exchange
-    class Bybit type_exchange
-    class XXXHunters_bot type_other
-    class Pro_Block_Bot type_other
-    class BingX type_exchange
-    class SleziSatoshi_TG type_other
-    class Bitget type_exchange
-    class crypto_rostik_TG type_other
-    class WhiteBIT type_exchange
-    class Coinbase type_exchange
-    class Bitcoin type_blockchain
-    class Ethereum type_blockchain
-    class Base type_blockchain
-    class Ton type_blockchain
-    class Sui type_blockchain
-    class Solana type_blockchain
-    class Cz type_person
-    class Near type_blockchain
-    class Kraken type_exchange
-    class CoinW exchange
-    class UTEX exchange
-    class CoinW_Telegram exchange
-    class Binance exchange
-    class OKX exchange
-    class Bybit exchange
-    class BingX exchange
-    class Bitget exchange
-    class WhiteBIT exchange
-    class Coinbase exchange
-    class Kraken exchange
-    class headlinerslinks_com tool
-    class headliners_traders_bot tool
-    class cryptocommunity_ai tool
-    class kirillevans_com tool
-    class MicronCryptoBot tool
-    class XXXHunters_bot tool
-    class Pro_Block_Bot tool
-    class Prometheus_Bitcoin infra
-    class Bitcoin infra
-    class Ethereum infra
-    class Base infra
-    class Ton infra
-    class Sui infra
-    class Solana infra
-    class Near infra
-    class Nikita_Anufriev person
-    class Cz person
-    class Headliners competitor
-    class Headliners_YouTube_Main competitor
-    class Headliners_TradeLab competitor
-    class nainspire_TG competitor
-    class Headliners_Crypto_TG competitor
-    class HashHedge competitor
-    class Kirill_Evans competitor
-    class PRO_BLOCKCHAIN competitor
-    class Roman_Tomera competitor
-    class RDeni competitor
-    class ForkLog competitor
-    class Wyckoff_Company competitor
-    class CryptoCapo_TG competitor
-    class Cryptology_Education competitor
-    class CRYPTUS_MEDIA competitor
-    class SLEZY_SATOSHI competitor
-    class Дневник_активов competitor
-    class Crypto_Falcon competitor
-    class Crypto_Signals_VIP competitor
-    class SerCrypto_channel competitor
-    class DOUBLETOP competitor
-    class CRYPTOR_BLOG competitor
-    class CryptoInside competitor
-    class BREIDO_Trade competitor
-    class Bondar_Scalp competitor
-    class Crypto_Scalp_Signals competitor
-    class ProBoy_Scalp competitor
-    class Skalping_DIGAHKA competitor
-    class TAIP_Trade competitor
-    class Altcoin_Trading_Signals competitor
-    class Crypto_Signal_Hub competitor
-    class Trader_signals_RU competitor
-    class Drazor competitor
-    class Gerchik_Trading_Ecosystem competitor
-    class INSTARDING competitor
-    class Peersynth_Trader competitor
-    class Vokari competitor
-    class Биржевик_Акции competitor
-    class Илья_Коровин competitor
-    class Мемы_от_трейдеров competitor
-    class Сигналы_МосБиржа competitor
-    class Центр_Прорыва competitor
-    class Школа_трейдинга_Ерина_Романа competitor
-    class CryptoFateev competitor
-    class Mamkin_Trader competitor
-    class Tomas_Kralov competitor
-    class headIinersadmin competitor
-    class Evans_Crypto_TG competitor
-    class dust_link competitor
-    class CrypTomera_TG competitor
-    class SleziSatoshi_TG competitor
-    class crypto_rostik_TG competitor
-
+class Headliners type_media
+class headlinerslinks_com type_other
+class headliners_traders_bot type_other
+class Nikita_Anufriev type_person
+class Headliners_YouTube_Main type_other
+class Headliners_TradeLab type_other
+class nainspire_TG type_other
+class Headliners_Crypto_TG type_other
+class HashHedge type_project
+class Kirill_Evans type_media
+class CoinW type_organization
+class PRO_BLOCKCHAIN type_media
+class Roman_Tomera type_media
+class RDeni type_media
+class ForkLog type_media
+class Wyckoff_Company type_organization
+class CryptoCapo_TG type_media
+class Cryptology_Education type_media
+class CRYPTUS_MEDIA type_media
+class SLEZY_SATOSHI type_media
+class Дневник_активов type_media
+class Prometheus_Bitcoin type_media
+class UTEX type_exchange
+class Crypto_Falcon type_media
+class Crypto_Signals_VIP type_media
+class SerCrypto_channel type_media
+class DOUBLETOP type_media
+class CRYPTOR_BLOG type_media
+class CryptoInside type_media
+class BREIDO_Trade type_media
+class Bondar_Scalp type_media
+class Crypto_Scalp_Signals type_media
+class ProBoy_Scalp type_media
+class Skalping_DIGAHKA type_media
+class TAIP_Trade type_media
+class Altcoin_Trading_Signals type_media
+class Crypto_Signal_Hub type_media
+class Trader_signals_RU type_media
+class Drazor type_media
+class Gerchik_Trading_Ecosystem type_media
+class INSTARDING type_media
+class Peersynth_Trader type_media
+class Vokari type_media
+class Биржевик_Акции type_media
+class Илья_Коровин type_media
+class Мемы_от_трейдеров type_media
+class Сигналы_МосБиржа type_media
+class Центр_Прорыва type_media
+class Школа_трейдинга_Ерина_Романа type_media
+class CryptoFateev type_media
+class Mamkin_Trader type_media
+class Tomas_Kralov type_person
+class CoinW_Telegram type_other
+class headIinersadmin type_other
+class Evans_Crypto_TG type_other
+class cryptocommunity_ai type_other
+class kirillevans_com type_other
+class Binance type_exchange
+class dust_link type_other
+class MicronCryptoBot type_other
+class CrypTomera_TG type_other
+class OKX type_exchange
+class Bybit type_exchange
+class XXXHunters_bot type_other
+class Pro_Block_Bot type_other
+class BingX type_exchange
+class SleziSatoshi_TG type_other
+class Bitget type_exchange
+class crypto_rostik_TG type_other
+class WhiteBIT type_exchange
+class Coinbase type_exchange
+class Bitcoin type_blockchain
+class Ethereum type_blockchain
+class Base type_blockchain
+class Ton type_blockchain
+class Sui type_blockchain
+class Solana type_blockchain
+class Cz type_person
+class Near type_blockchain
+class Kraken type_exchange
 </div>
 <p class="desc"><a href="https://olewalio.github.io/headliners-graph/">GitHub Pages</a></p>
-</body>
-</html>
+</body></html>
