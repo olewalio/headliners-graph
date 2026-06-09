@@ -225,4 +225,15 @@ a { color:#60a5fa; }
     class Школа трейдинга Ерина Романа competitor
 </div>
 <p class="desc"><a href="https://olewalio.github.io/headliners-graph/">GitHub Pages</a></p>
+
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'dark', maxTextSize: 50000 });
+  document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+      document.querySelectorAll('.mermaid').forEach(function(el) {
+        try { mermaid.run({ nodes: [el] }); } catch(e) { console.error(e); }
+      });
+    }, 500);
+  });
+</script>
 </body></html>
