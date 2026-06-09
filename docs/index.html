@@ -9,7 +9,7 @@ h1 { color:#c084fc; text-align:center; }
 a { color:#60a5fa; }
 </style></head><body>
 <h1>🏛 Хедлайнеры — карта взаимосвязей</h1>
-<p class="desc">🔴 8 бирж · ⚪ 2 инструментов · 🟣 43 конкурентов</p>
+<p class="desc">🔴 8 бирж · ⚪ 16 инструментов · 🟣 40 конкурентов · Всё из базы</p>
 <div id="graph" class="mermaid">graph TD
     classDef exchange fill:#f87171,stroke:#dc2626,color:#000
     classDef tool fill:#d1d5db,stroke:#6b7280,color:#000
@@ -27,23 +27,33 @@ a { color:#60a5fa; }
     end
 
     subgraph ИНСТРУМЕНТЫ
+    Altcoin Trading Signals["Altcoin Trading Signals"]
+    BREIDO Trade["BREIDO Trade"]
+    Bondar&CScalp["Bondar&CScalp"]
+    Crypto Scalp Signals["Crypto Scalp Signals"]
+    Crypto Signal Hub["Crypto Signal Hub"]
+    Crypto Signals ©["Crypto Signals ©"]
+    CryptoCapo TG["CryptoCapo TG"]
     HashHedge["HashHedge"]
+    ProBoy["ProBoy"]
+    Trader signals RU["Trader signals RU"]
     UTEX["UTEX"]
+    Мемы от трейдеров["Мемы от трейдеров"]
+    Сигналы МосБиржа["Сигналы МосБиржа"]
+    Скальпинг с DIGAHKA["Скальпинг с DIGAHKA"]
+    ТАЙП["ТАЙП"]
+    Чат криптотрейдеров["Чат криптотрейдеров"]
     end
 
     subgraph КОНКУРЕНТЫ
-    Altcoin Trading Signals["Altcoin Trading Signals"]
-    BREIDO Trade["BREIDO Trade"]
     Bondar Scalp["Bondar Scalp"]
     CRYPTOR BLOG["CRYPTOR BLOG"]
     CRYPTUS MEDIA["CRYPTUS MEDIA"]
     Crypto Falcon["Crypto Falcon"]
-    Crypto Scalp Signals["Crypto Scalp Signals"]
-    Crypto Signal Hub["Crypto Signal Hub"]
     Crypto Signals VIP["Crypto Signals VIP"]
-    CryptoCapo TG["CryptoCapo TG"]
     CryptoFateev["CryptoFateev"]
     CryptoInside["CryptoInside"]
+    Cryptology["Cryptology"]
     Cryptology Education["Cryptology Education"]
     DOUBLETOP["DOUBLETOP"]
     Drazor["Drazor"]
@@ -58,21 +68,22 @@ a { color:#60a5fa; }
     Peersynth Trader["Peersynth Trader"]
     ProBoy Scalp["ProBoy Scalp"]
     Prometheus Bitcoin["Prometheus Bitcoin"]
+    Prometheus Crypto["Prometheus Crypto"]
     RDeni["RDeni"]
+    RDeni (Ростик)["RDeni (Ростик)"]
     Roman Tomera["Roman Tomera"]
     SLEZY SATOSHI["SLEZY SATOSHI"]
+    SerCrypto["SerCrypto"]
     SerCrypto channel["SerCrypto channel"]
     Skalping DIGAHKA["Skalping DIGAHKA"]
     TAIP Trade["TAIP Trade"]
     Tomas Kralov["Tomas Kralov"]
-    Trader signals RU["Trader signals RU"]
     Vokari["Vokari"]
     Wyckoff Company["Wyckoff Company"]
     Биржевик Акции["Биржевик Акции"]
     Дневник активов["Дневник активов"]
     Илья Коровин["Илья Коровин"]
-    Мемы от трейдеров["Мемы от трейдеров"]
-    Сигналы МосБиржа["Сигналы МосБиржа"]
+    Хедлайнеры["Хедлайнеры"]
     Центр Прорыва["Центр Прорыва"]
     Школа трейдинга Ерина Романа["Школа трейдинга Ерина Романа"]
     end
@@ -83,7 +94,7 @@ a { color:#60a5fa; }
     OKX -->|partner| Cryptology Education
     Binance -->|partner| DOUBLETOP
     CoinW -->|partner| Headliners
-    HashHedge -->|partner| Headliners
+    Headliners -->|partner| HashHedge
     Headliners -->|competitor| Kirill Evans
     Headliners -->|competitor| Roman Tomera
     Headliners -->|competitor| PRO BLOCKCHAIN
@@ -110,7 +121,7 @@ a { color:#60a5fa; }
     Headliners -->|competitor| CRYPTUS MEDIA
     Headliners -->|competitor| DOUBLETOP
     Headliners -->|competitor| CryptoFateev
-    UTEX -->|partner| Headliners
+    Headliners -->|partner| UTEX
     Headliners -->|competitor| CryptoInside
     Headliners -->|competitor| Altcoin Trading Signals
     Headliners -->|competitor| Crypto Signal Hub
@@ -126,9 +137,20 @@ a { color:#60a5fa; }
     Headliners -->|competitor| Сигналы МосБиржа
     Headliners -->|competitor| Центр Прорыва
     Headliners -->|competitor| Школа трейдинга Ерина Романа
+    Headliners -->|competitor| ТАЙП
+    Headliners -->|competitor| Bondar&CScalp
+    Headliners -->|competitor| Crypto Signals ©
+    Headliners -->|competitor| Cryptology
+    Headliners -->|competitor| ProBoy
+    Headliners -->|competitor| Prometheus Crypto
+    Headliners -->|competitor| RDeni (Ростик)
+    Headliners -->|competitor| SerCrypto
+    Headliners -->|competitor| Скальпинг с DIGAHKA
+    Headliners -->|competitor| Хедлайнеры
+    Headliners -->|competitor| Чат криптотрейдеров
     Binance -->|partner| Kirill Evans
     Nikita Anufriev -->|founder| Headliners
-    HashHedge -->|partner| Nikita Anufriev
+    Nikita Anufriev -->|partner| HashHedge
     Bybit -->|partner| PRO BLOCKCHAIN
     BingX -->|partner| PRO BLOCKCHAIN
     Gate.io -->|partner| PRO BLOCKCHAIN
@@ -149,20 +171,30 @@ a { color:#60a5fa; }
     class Gate.io exchange
     class OKX exchange
     class WhiteBIT exchange
+    class Altcoin Trading Signals tool
+    class BREIDO Trade tool
+    class Bondar&CScalp tool
+    class Crypto Scalp Signals tool
+    class Crypto Signal Hub tool
+    class Crypto Signals © tool
+    class CryptoCapo TG tool
     class HashHedge tool
+    class ProBoy tool
+    class Trader signals RU tool
     class UTEX tool
-    class Altcoin Trading Signals competitor
-    class BREIDO Trade competitor
+    class Мемы от трейдеров tool
+    class Сигналы МосБиржа tool
+    class Скальпинг с DIGAHKA tool
+    class ТАЙП tool
+    class Чат криптотрейдеров tool
     class Bondar Scalp competitor
     class CRYPTOR BLOG competitor
     class CRYPTUS MEDIA competitor
     class Crypto Falcon competitor
-    class Crypto Scalp Signals competitor
-    class Crypto Signal Hub competitor
     class Crypto Signals VIP competitor
-    class CryptoCapo TG competitor
     class CryptoFateev competitor
     class CryptoInside competitor
+    class Cryptology competitor
     class Cryptology Education competitor
     class DOUBLETOP competitor
     class Drazor competitor
@@ -177,21 +209,22 @@ a { color:#60a5fa; }
     class Peersynth Trader competitor
     class ProBoy Scalp competitor
     class Prometheus Bitcoin competitor
+    class Prometheus Crypto competitor
     class RDeni competitor
+    class RDeni (Ростик) competitor
     class Roman Tomera competitor
     class SLEZY SATOSHI competitor
+    class SerCrypto competitor
     class SerCrypto channel competitor
     class Skalping DIGAHKA competitor
     class TAIP Trade competitor
     class Tomas Kralov competitor
-    class Trader signals RU competitor
     class Vokari competitor
     class Wyckoff Company competitor
     class Биржевик Акции competitor
     class Дневник активов competitor
     class Илья Коровин competitor
-    class Мемы от трейдеров competitor
-    class Сигналы МосБиржа competitor
+    class Хедлайнеры competitor
     class Центр Прорыва competitor
     class Школа трейдинга Ерина Романа competitor
 </div>
