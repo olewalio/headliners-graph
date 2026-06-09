@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html><head><meta charset="UTF-8">
-<title>Хедлайнеры — карта взаимосвязей</title>
+<title>Хедлайнеры — карта взаимосвязей (depth=2)</title>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <style>
 body { background:#1a1a2e; color:#e0e0e0; font-family:Arial,sans-serif; margin:0; padding:20px; }
@@ -11,7 +11,7 @@ a { color:#60a5fa; }
 </style>
 </head><body>
 <h1>🏛 Хедлайнеры — карта взаимосвязей</h1>
-<p class="desc">🔴 Биржи · ⚪ Инструменты · 🟢 Инфраструктура · 🟣 Конкуренты · 🩷 Люди</p>
+<p class="desc">🔴 Биржи · ⚪ Инструменты · 🟣 Конкуренты · depth=2 (только прямые связи)</p>
 <div id="graph" class="mermaid">graph TD
     classDef exchange fill:#f87171,stroke:#dc2626,color:#000
     classDef tool fill:#d1d5db,stroke:#6b7280,color:#000
@@ -37,25 +37,12 @@ a { color:#60a5fa; }
     nainspire_TG["📦 nainspire TG"]
     HashHedge["🔧 HashHedge"]
     PRO_BLOCKCHAIN["📰 PRO BLOCKCHAIN"]
-    CoinW_Telegram["📦 CoinW Telegram"]
     cryptocommunity_ai["📦 cryptocommunity.ai"]
     kirillevans_com["📦 kirillevans.com"]
     dust_link["📦 dust.link"]
     MicronCryptoBot["📦 MicronCryptoBot"]
     XXXHunters_bot["📦 XXXHunters_bot"]
     Pro_Block_Bot["📦 Pro_Block_Bot"]
-    end
-
-    subgraph ИНФРАСТРУКТУРА
-    Prometheus_Bitcoin["📰 Prometheus Bitcoin"]
-    Coinbase["🏛️ Coinbase"]
-    Bitcoin["⛓️ Bitcoin"]
-    Ethereum["⛓️ Ethereum"]
-    Base["⛓️ Base"]
-    Ton["⛓️ Ton"]
-    Sui["⛓️ Sui"]
-    Solana["⛓️ Solana"]
-    Near["⛓️ Near"]
     end
 
     subgraph КОНКУРЕНТЫ
@@ -107,8 +94,6 @@ a { color:#60a5fa; }
     CrypTomera_TG["📦 CrypTomera TG"]
     SleziSatoshi_TG["📦 SleziSatoshi TG"]
     crypto_rostik_TG["📦 crypto_rostik TG"]
-    Cz["👤 Cz"]
-    Kraken["🏛️ Kraken"]
     end
 
     Headliners-->|subdomain|headlinerslinks_com
@@ -198,19 +183,6 @@ a { color:#60a5fa; }
     DOUBLETOP-->|partner|Binance
     CryptoFateev-->|partner|Binance
     CryptoInside-->|partner|Binance
-    Binance-->|mentioned_in|Coinbase
-    Bitcoin-->|mentioned_in|Binance
-    Ethereum-->|mentioned_in|Binance
-    Base-->|mentioned_in|Binance
-    Ton-->|mentioned_in|Binance
-    Sui-->|mentioned_in|Binance
-    Solana-->|mentioned_in|Binance
-    Cz-->|mentioned_in|Binance
-    Bitcoin-->|mentioned_in|Bybit
-    Ethereum-->|mentioned_in|Bybit
-    Ton-->|mentioned_in|Bybit
-    Near-->|mentioned_in|Bybit
-    Kraken-->|mentioned_in|Bybit
 
 class Headliners type_media
 class headlinerslinks_com type_other
@@ -282,16 +254,6 @@ class SleziSatoshi_TG type_other
 class Bitget type_exchange
 class crypto_rostik_TG type_other
 class WhiteBIT type_exchange
-class Coinbase type_exchange
-class Bitcoin type_blockchain
-class Ethereum type_blockchain
-class Base type_blockchain
-class Ton type_blockchain
-class Sui type_blockchain
-class Solana type_blockchain
-class Cz type_person
-class Near type_blockchain
-class Kraken type_exchange
 </div>
 <p class="desc"><a href="https://olewalio.github.io/headliners-graph/">GitHub Pages</a></p>
 </body></html>
