@@ -35,26 +35,6 @@ body {
   transition: background 0.2s;
 }
 .header .links a:hover { background: #2a2a4e; }
-#loader {
-  text-align: center;
-  padding: 60px 20px;
-  color: #888;
-}
-#loader .spinner {
-  width: 40px; height: 40px;
-  border: 3px solid #2a2a4e;
-  border-top-color: #00d4aa;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-  margin: 20px auto;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-#error {
-  display: none;
-  text-align: center;
-  padding: 40px 20px;
-  color: #ff6b6b;
-}
 .graph-container {
   width: 100%;
   overflow: auto;
@@ -81,10 +61,7 @@ body {
   font-size: 0.85em;
   color: #ccc;
 }
-.legend-dot {
-  width: 14px; height: 14px;
-  border-radius: 3px;
-}
+.legend-dot { width: 14px; height: 14px; border-radius: 3px; }
 .footer {
   text-align: center;
   padding: 16px;
@@ -104,7 +81,6 @@ body {
   <div class="subtitle">Конкуренты, партнёры и инструменты крипто-сообщества</div>
   <div class="links">
     <a href="mermaid.txt" target="_blank">📄 Исходный код</a>
-    <a href="#" id="editLink" target="_blank">✏️ Редактировать</a>
   </div>
 </div>
 
@@ -117,17 +93,219 @@ body {
   <div class="legend-item">➡️ <span style="color:#00d4aa">founder</span></div>
 </div>
 
-<div id="loader">
-  <div class="spinner"></div>
-  <p>Загрузка графа...</p>
+<div class="graph-container">
+<div class="mermaid">
+graph TD
+    classDef exchange fill:#f87171,stroke:#dc2626,color:#000
+    classDef tool fill:#d1d5db,stroke:#6b7280,color:#000
+    classDef competitor fill:#c084fc,stroke:#9333ea,color:#000
+    subgraph БИРЖИ
+    Binance["Binance"]
+    BingX["BingX"]
+    Bitget["Bitget"]
+    Bybit["Bybit"]
+    CoinW["CoinW"]
+    Gate.io["Gate.io"]
+    OKX["OKX"]
+    WhiteBIT["WhiteBIT"]
+    end
+    subgraph ИНСТРУМЕНТЫ
+    AltcoinSignals["Altcoin Trading Signals"]
+    BREIDO_Trade["BREIDO Trade"]
+    BondarCScalp["Bondar CScalp"]
+    CryptoScalpSignals["Crypto Scalp Signals"]
+    CryptoSignalHub["Crypto Signal Hub"]
+    CryptoSignals["Crypto Signals"]
+    CryptoCapoTG["CryptoCapo TG"]
+    HashHedge["HashHedge"]
+    ProBoy["ProBoy"]
+    TraderSignalsRU["Trader signals RU"]
+    UTEX["UTEX"]
+    MemesTraders["Мемы от трейдеров"]
+    SignalsMOEX["Сигналы МосБиржа"]
+    SkalpingDIGAHKA["Скальпинг с DIGAHKA"]
+    ТАЙП["ТАЙП"]
+    ChatCrypto["Чат криптотрейдеров"]
+    end
+    subgraph КОНКУРЕНТЫ
+    Bondar_Scalp["Bondar Scalp"]
+    CRYPTOR_BLOG["CRYPTOR BLOG"]
+    CRYPTUS_MEDIA["CRYPTUS MEDIA"]
+    Crypto_Falcon["Crypto Falcon"]
+    Crypto_Signals_VIP["Crypto Signals VIP"]
+    CryptoFateev["CryptoFateev"]
+    CryptoInside["CryptoInside"]
+    Cryptology["Cryptology"]
+    Cryptology_Education["Cryptology Education"]
+    DOUBLETOP["DOUBLETOP"]
+    Drazor["Drazor"]
+    ForkLog["ForkLog"]
+    Gerchik_Trading_Ecosystem["Gerchik Trading Ecosystem"]
+    Headliners["Headliners"]
+    INSTARDING["INSTARDING"]
+    Kirill_Evans["Kirill Evans"]
+    Mamkin_Trader["Mamkin Trader"]
+    NikitaAnufriev["Никита Ануфриев"]
+    PRO_BLOCKCHAIN["PRO BLOCKCHAIN"]
+    Peersynth_Trader["Peersynth Trader"]
+    ProBoy_Scalp["ProBoy Scalp"]
+    Prometheus_Bitcoin["Prometheus Bitcoin"]
+    Prometheus_Crypto["Prometheus Crypto"]
+    RDeni["RDeni"]
+    Roman_Tomera["Roman Tomera"]
+    SLEZY_SATOSHI["SLEZY SATOSHI"]
+    SerCrypto["SerCrypto"]
+    SerCrypto_channel["SerCrypto channel"]
+    Skalping_DIGAHKA["Skalping DIGAHKA"]
+    TAIP_Trade["TAIP Trade"]
+    Tomas_Kralov["Tomas Kralov"]
+    Vokari["Vokari"]
+    Wyckoff_Company["Wyckoff Company"]
+    Биржевик_Акции["Биржевик Акции"]
+    Дневник_активов["Дневник активов"]
+    Илья_Коровин["Илья Коровин"]
+    Хедлайнеры["Хедлайнеры"]
+    Центр_Прорыва["Центр Прорыва"]
+    Школа_трейдинга_Ерина_Романа["Школа трейдинга Ерина Романа"]
+    end
+    Bybit -->|partner| Crypto_Falcon
+    Binance -->|partner| CryptoFateev
+    Binance -->|partner| CryptoInside
+    OKX -->|partner| Cryptology_Education
+    Binance -->|partner| DOUBLETOP
+    CoinW -->|partner| Headliners
+    Headliners -->|partner| HashHedge
+    Headliners -->|competitor| Kirill_Evans
+    Headliners -->|competitor| Roman_Tomera
+    Headliners -->|competitor| PRO_BLOCKCHAIN
+    Headliners -->|competitor| SLEZY_SATOSHI
+    Headliners -->|competitor| ForkLog
+    Headliners -->|competitor| CRYPTOR_BLOG
+    Headliners -->|competitor| RDeni
+    Headliners -->|competitor| Mamkin_Trader
+    Headliners -->|competitor| CryptoCapoTG
+    Headliners -->|competitor| Crypto_Signals_VIP
+    Headliners -->|competitor| Wyckoff_Company
+    Headliners -->|competitor| Crypto_Falcon
+    Headliners -->|competitor| Tomas_Kralov
+    Headliners -->|competitor| CryptoScalpSignals
+    Headliners -->|competitor| Bondar_Scalp
+    Headliners -->|competitor| ProBoy_Scalp
+    Headliners -->|competitor| BREIDO_Trade
+    Headliners -->|competitor| Skalping_DIGAHKA
+    Headliners -->|competitor| TAIP_Trade
+    Headliners -->|competitor| Дневник_активов
+    Headliners -->|competitor| SerCrypto_channel
+    Headliners -->|competitor| Cryptology_Education
+    Headliners -->|competitor| Prometheus_Bitcoin
+    Headliners -->|competitor| CRYPTUS_MEDIA
+    Headliners -->|competitor| DOUBLETOP
+    Headliners -->|competitor| CryptoFateev
+    Headliners -->|partner| UTEX
+    Headliners -->|competitor| CryptoInside
+    Headliners -->|competitor| AltcoinSignals
+    Headliners -->|competitor| CryptoSignalHub
+    Headliners -->|competitor| TraderSignalsRU
+    Headliners -->|competitor| Drazor
+    Headliners -->|competitor| Gerchik_Trading_Ecosystem
+    Headliners -->|competitor| INSTARDING
+    Headliners -->|competitor| Peersynth_Trader
+    Headliners -->|competitor| Vokari
+    Headliners -->|competitor| Биржевик_Акции
+    Headliners -->|competitor| Илья_Коровин
+    Headliners -->|competitor| MemesTraders
+    Headliners -->|competitor| SignalsMOEX
+    Headliners -->|competitor| Центр_Прорыва
+    Headliners -->|competitor| Школа_трейдинга_Ерина_Романа
+    Headliners -->|competitor| ТАЙП
+    Headliners -->|competitor| BondarCScalp
+    Headliners -->|competitor| CryptoSignals
+    Headliners -->|competitor| Cryptology
+    Headliners -->|competitor| ProBoy
+    Headliners -->|competitor| Prometheus_Crypto
+    Headliners -->|competitor| SerCrypto
+    Headliners -->|competitor| SkalpingDIGAHKA
+    Headliners -->|competitor| Хедлайнеры
+    Headliners -->|competitor| ChatCrypto
+    Binance -->|partner| Kirill_Evans
+    NikitaAnufriev -->|founder| Headliners
+    NikitaAnufriev -->|partner| HashHedge
+    Bybit -->|partner| PRO_BLOCKCHAIN
+    BingX -->|partner| PRO_BLOCKCHAIN
+    Gate.io -->|partner| PRO_BLOCKCHAIN
+    Binance -->|partner| Prometheus_Bitcoin
+    WhiteBIT -->|partner| RDeni
+    Binance -->|partner| Roman_Tomera
+    Bybit -->|partner| Roman_Tomera
+    OKX -->|partner| Roman_Tomera
+    Bitget -->|partner| SLEZY_SATOSHI
+    Gate.io -->|partner| SerCrypto_channel
+    Binance -->|partner| Дневник_активов
+    Bybit -->|partner| Дневник_активов
+    class Binance exchange
+    class BingX exchange
+    class Bitget exchange
+    class Bybit exchange
+    class CoinW exchange
+    class Gate.io exchange
+    class OKX exchange
+    class WhiteBIT exchange
+    class AltcoinSignals tool
+    class BREIDO_Trade tool
+    class BondarCScalp tool
+    class CryptoScalpSignals tool
+    class CryptoSignalHub tool
+    class CryptoSignals tool
+    class CryptoCapoTG tool
+    class HashHedge tool
+    class ProBoy tool
+    class TraderSignalsRU tool
+    class UTEX tool
+    class MemesTraders tool
+    class SignalsMOEX tool
+    class SkalpingDIGAHKA tool
+    class ТАЙП tool
+    class ChatCrypto tool
+    class Bondar_Scalp competitor
+    class CRYPTOR_BLOG competitor
+    class CRYPTUS_MEDIA competitor
+    class Crypto_Falcon competitor
+    class Crypto_Signals_VIP competitor
+    class CryptoFateev competitor
+    class CryptoInside competitor
+    class Cryptology competitor
+    class Cryptology_Education competitor
+    class DOUBLETOP competitor
+    class Drazor competitor
+    class ForkLog competitor
+    class Gerchik_Trading_Ecosystem competitor
+    class Headliners competitor
+    class INSTARDING competitor
+    class Kirill_Evans competitor
+    class Mamkin_Trader competitor
+    class NikitaAnufriev competitor
+    class PRO_BLOCKCHAIN competitor
+    class Peersynth_Trader competitor
+    class ProBoy_Scalp competitor
+    class Prometheus_Bitcoin competitor
+    class Prometheus_Crypto competitor
+    class RDeni competitor
+    class Roman_Tomera competitor
+    class SLEZY_SATOSHI competitor
+    class SerCrypto competitor
+    class SerCrypto_channel competitor
+    class Skalping_DIGAHKA competitor
+    class TAIP_Trade competitor
+    class Tomas_Kralov competitor
+    class Vokari competitor
+    class Wyckoff_Company competitor
+    class Биржевик_Акции competitor
+    class Дневник_активов competitor
+    class Илья_Коровин competitor
+    class Хедлайнеры competitor
+    class Центр_Прорыва competitor
+    class Школа_трейдинга_Ерина_Романа competitor
 </div>
-
-<div id="error">
-  <p>❌ Не удалось загрузить граф</p>
-</div>
-
-<div class="graph-container" id="graphContainer" style="display:none">
-  <pre class="mermaid" id="mermaidContainer"></pre>
 </div>
 
 <div class="footer">
@@ -136,7 +314,7 @@ body {
 
 <script>
 mermaid.initialize({
-  startOnLoad: false,
+  startOnLoad: true,
   theme: 'dark',
   securityLevel: 'loose',
   maxEdges: 500,
@@ -162,41 +340,6 @@ mermaid.initialize({
     mainBkg: '#1a1a2e'
   }
 });
-
-function encodeForMermaidLive(code) {
-  const mapping = {};
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-';
-  let result = '';
-  let padding = '';
-  
-  // pako-style deflate + base64url encode for Mermaid Live
-  // We'll just use a simpler approach: btoa + encodeURIComponent
-  return btoa(unescape(encodeURIComponent(code)));
-}
-
-fetch('mermaid.txt?_=' + Date.now())
-  .then(r => {
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    return r.text();
-  })
-  .then(code => {
-    document.getElementById('loader').style.display = 'none';
-    
-    // Set edit link
-    document.getElementById('editLink').href = 'https://mermaid.live/edit#pako:' + btoa(unescape(encodeURIComponent('graph TD\n' + code)));
-    
-    // Render
-    const container = document.getElementById('mermaidContainer');
-    container.textContent = code;
-    document.getElementById('graphContainer').style.display = '';
-    
-    return mermaid.run({ nodes: [container] });
-  })
-  .catch(err => {
-    document.getElementById('loader').style.display = 'none';
-    document.getElementById('error').style.display = '';
-    document.getElementById('error').innerHTML = '<p>❌ ' + err.message + '</p>';
-  });
 </script>
 </body>
 </html>

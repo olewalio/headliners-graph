@@ -18,7 +18,7 @@ graph TD
     BondarCScalp["Bondar CScalp"]
     CryptoScalpSignals["Crypto Scalp Signals"]
     CryptoSignalHub["Crypto Signal Hub"]
-    CryptoSignals["Crypto Signals ©"]
+    CryptoSignals["Crypto Signals"]
     CryptoCapoTG["CryptoCapo TG"]
     HashHedge["HashHedge"]
     ProBoy["ProBoy"]
@@ -135,14 +135,14 @@ graph TD
     NikitaAnufriev -->|partner| HashHedge
     Bybit -->|partner| PRO_BLOCKCHAIN
     BingX -->|partner| PRO_BLOCKCHAIN
-    Gate.io -->|partner| PRO BLOCKCHAIN
+    Gate.io -->|partner| PRO_BLOCKCHAIN
     Binance -->|partner| Prometheus_Bitcoin
     WhiteBIT -->|partner| RDeni
     Binance -->|partner| Roman_Tomera
     Bybit -->|partner| Roman_Tomera
     OKX -->|partner| Roman_Tomera
     Bitget -->|partner| SLEZY_SATOSHI
-    Gate.io -->|partner| SerCrypto channel
+    Gate.io -->|partner| SerCrypto_channel
     Binance -->|partner| Дневник_активов
     Bybit -->|partner| Дневник_активов
     class Binance exchange
