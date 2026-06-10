@@ -137,34 +137,64 @@ add_info('HashHedge','🔧 Проп-фирма, партнёр Headliners','Ак
 
 # Edges
 EDGES = [
+    # === FOUNDER ===
     ('Nikita_Anufriev','Headliners'),
-    # Channels -> infra
+    
+    # === CHANNELS -> INFRASTRUCTURE ===
     ('Headliners','YT_Headliners'),('Headliners','TG_nainspire'),
     ('Headliners','TG_headliners_bd'),('Headliners','TG_traders_bot'),
     ('Headliners','VK'),('Headliners','headlinerslinks'),
+    
     ('Kirill_Evans','YT_KirillEvans'),('Kirill_Evans','TG_Evans'),
     ('Kirill_Evans','kirillevans_com'),('Kirill_Evans','dust_link'),
     ('Kirill_Evans','cryptocommunity'),('Kirill_Evans','bot_MicronCrypto'),
+    
     ('Roman_Tomera','YT_RomanTomera'),('Roman_Tomera','TG_CrypTomera'),
     ('PRO_BLOCKCHAIN','YT_PROBlockchain'),('PRO_BLOCKCHAIN','bot_ProBlock'),
-    ('PRO_BLOCKCHAIN','bot_XXXHunters'),('SLEZY_SATOSHI','TG_SleziSato'),
+    ('PRO_BLOCKCHAIN','bot_XXXHunters'),
+    ('SLEZY_SATOSHI','TG_SleziSato'),
     ('RDeni','TG_Rostik'),
-    # Exchanges -> channels
+    
+    # === CHANNELS -> EXCHANGE PARTNERS ===
+    # Bybit network (marketing analysis)
     ('Bybit','SerCrypto'),('Bybit','Crypto_Falcon'),
     ('Bybit','PRO_BLOCKCHAIN'),('Bybit','Roman_Tomera'),
     ('Bybit','Дневник_активов'),('Bybit','Gerchik_Trading'),
+    
+    # OKX network
     ('OKX','Cryptology'),('OKX','Roman_Tomera'),
     ('OKX','Cryptology_Edu'),
-    ('Binance','Prometheus'),('Binance','Kirill_Evans'),
-    ('Binance','Roman_Tomera'),('Binance','Дневник_активов'),
+    
+    # Binance network
+    ('Binance','Kirill_Evans'),('Binance','Roman_Tomera'),
+    ('Binance','Prometheus'),('Binance','Дневник_активов'),
     ('Binance','CryptoFateev'),('Binance','CryptoInside'),
     ('Binance','DOUBLETOP'),
-    ('Bitget','SLEZY_SATOSHI'),('UTEX','Headliners'),
+    
+    # Exchange partnerships
+    ('CoinW','Headliners'),
+    ('BingX','Headliners'),('BingX','PRO_BLOCKCHAIN'),
+    ('UTEX','Headliners'),
+    ('Bitget','SLEZY_SATOSHI'),
+    ('WhiteBIT','RDeni'),
     ('Gate_io','PRO_BLOCKCHAIN'),('Gate_io','Cryptology'),
-    # Tools -> channels
-    ('AltcoinSignals','Kirill_Evans'),('CryptoSignals','SerCrypto'),
-    ('CryptoSignalHub','SerCrypto'),('Crypto_Scalp','SerCrypto'),
-    ('ProBoy','Crypto_Falcon'),('TAIP_Trade','ROMAN_Tomera'),
+    
+    # === EXCHANGES -> TOOLS ===
+    ('Binance','HashHedge'),
+    ('CoinW','TradeLab'),
+    
+    # === TOOLS -> CHANNELS ===
+    ('HashHedge','Headliners'),
+    ('TradeLab','Headliners'),
+    ('AltcoinSignals','Kirill_Evans'),
+    ('CryptoSignals','SerCrypto'),
+    ('CryptoSignalHub','SerCrypto'),
+    ('Crypto_Scalp','SerCrypto'),
+    ('ProBoy','Crypto_Falcon'),
+    ('BondarCScalp','Crypto_Falcon'),
+    ('SkalpingDIGAHKA','SerCrypto'),
+    ('TAIP_Trade','Roman_Tomera'),
+    ('Peersynth','Roman_Tomera'),
 ]
 
 # Positions
