@@ -49,7 +49,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div id="header">
   <div>
     <h2>🏛 Хедлайнеры — Граф связей</h2>
-    <div class="sub">8 бирж · 16 инструментов · 37 конкурентов</div>
+    <div class="sub">8 бирж · 80 сущностей · 100 связей</div>
   </div>
   <div class="badge">Кликни на узле для деталей</div>
 </div>
@@ -83,66 +83,90 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 var C={exchange:'#f87171',tool:'#d1d5db',competitor:'#c084fc'};
 
 // Nodes
-// === AUTO-GENERATED FROM headliners_full_graph.md ===
+// AUTO-GENERATED from headliners_mermaid_ru.txt
 
+var edgeColor={"partner": "#ffd93d", "competitor": "#ff6b6b", "founder": "#00d4aa", "subdomain": "#667799", "mention": "#556677", "account": "#667799", "employee": "#888899"};
 var NN=[
-  {id:'Base',l:'Base',g:'blockchain',d:'Blockchain',sz:15,m:0.7},
-  {id:'Binance',l:'Binance',g:'exchange',d:'Exchange',sz:32,m:15},
-  {id:'BingX',l:'BingX',g:'exchange',d:'Exchange',sz:32,m:15},
-  {id:'Bitcoin',l:'Bitcoin',g:'blockchain',d:'Blockchain',sz:15,m:0.7},
-  {id:'Bitget',l:'Bitget',g:'exchange',d:'Exchange',sz:32,m:15},
-  {id:'Bybit',l:'Bybit',g:'exchange',d:'Exchange',sz:32,m:15},
-  {id:'CRYPTUS_MEDIA',l:'CRYPTUS MEDIA',g:'media',d:'Media',sz:28,m:1.8},
-  {id:'CoinW',l:'CoinW',g:'organization',d:'Organization',sz:20,m:1.2},
-  {id:'CoinW_Telegram',l:'CoinW Telegram',g:'other',d:'Other',sz:20,m:1.2},
-  {id:'Coinbase',l:'Coinbase',g:'exchange',d:'Exchange',sz:32,m:15},
-  {id:'CrypTomera_TG',l:'CrypTomera TG',g:'other',d:'Other',sz:20,m:1.2},
-  {id:'CryptoCapo_TG',l:'CryptoCapo TG',g:'media',d:'Media',sz:28,m:1.8},
-  {id:'CryptoFateev',l:'CryptoFateev',g:'media',d:'Media',sz:28,m:1.8},
-  {id:'Crypto_Falcon',l:'Crypto Falcon',g:'media',d:'Media',sz:28,m:1.8},
-  {id:'Crypto_Signals_VIP',l:'Crypto Signals VIP',g:'media',d:'Media',sz:28,m:1.8},
-  {id:'Cryptology_Education',l:'Cryptology Education',g:'media',d:'Media',sz:28,m:1.8},
-  {id:'Cz',l:'Cz',g:'person',d:'Person',sz:15,m:0.7},
-  {id:'DOUBLETOP',l:'DOUBLETOP',g:'media',d:'Media',sz:28,m:1.8},
-  {id:'Ethereum',l:'Ethereum',g:'blockchain',d:'Blockchain',sz:15,m:0.7},
-  {id:'Evans_Crypto_TG',l:'Evans Crypto TG',g:'other',d:'Other',sz:20,m:1.2},
-  {id:'ForkLog',l:'ForkLog',g:'media',d:'Media',sz:28,m:1.8},
-  {id:'HashHedge',l:'HashHedge',g:'project',d:'Tool',sz:14,m:4},
-  {id:'Headliners',l:'Headliners',g:'media',d:'Media',sz:34,m:6},
-  {id:'Headliners_Crypto_TG',l:'Headliners Crypto TG',g:'other',d:'Other',sz:20,m:1.2},
-  {id:'Headliners_TradeLab',l:'Headliners TradeLab',g:'other',d:'Other',sz:20,m:1.2},
-  {id:'Headliners_YouTube_Main',l:'Headliners YouTube Main',g:'other',d:'Other',sz:20,m:1.2},
-  {id:'Kirill_Evans',l:'Kirill Evans',g:'media',d:'Media',sz:28,m:1.8},
-  {id:'Kraken',l:'Kraken',g:'exchange',d:'Exchange',sz:32,m:15},
-  {id:'Mamkin_Trader',l:'Mamkin Trader',g:'media',d:'Media',sz:28,m:1.8},
-  {id:'MicronCryptoBot',l:'MicronCryptoBot',g:'other',d:'Other',sz:20,m:1.2},
-  {id:'Near',l:'Near',g:'blockchain',d:'Blockchain',sz:15,m:0.7},
-  {id:'Nikita_Anufriev',l:'Nikita Anufriev',g:'person',d:'Person',sz:26,m:3},
-  {id:'OKX',l:'OKX',g:'exchange',d:'Exchange',sz:32,m:15},
-  {id:'PRO_BLOCKCHAIN',l:'PRO BLOCKCHAIN',g:'media',d:'Media',sz:28,m:1.8},
-  {id:'Pro_Block_Bot',l:'Pro_Block_Bot',g:'other',d:'Other',sz:20,m:1.2},
-  {id:'Prometheus_Bitcoin',l:'Prometheus Bitcoin',g:'media',d:'Media',sz:28,m:1.8},
-  {id:'RDeni',l:'RDeni',g:'media',d:'Media',sz:28,m:1.8},
-  {id:'Roman_Tomera',l:'Roman Tomera',g:'media',d:'Media',sz:28,m:1.8},
-  {id:'SLEZY_SATOSHI',l:'SLEZY SATOSHI',g:'media',d:'Media',sz:28,m:1.8},
-  {id:'SerCrypto_channel',l:'SerCrypto channel',g:'media',d:'Media',sz:28,m:1.8},
-  {id:'SleziSatoshi_TG',l:'SleziSatoshi TG',g:'other',d:'Other',sz:20,m:1.2},
-  {id:'Solana',l:'Solana',g:'blockchain',d:'Blockchain',sz:15,m:0.7},
-  {id:'Sui',l:'Sui',g:'blockchain',d:'Blockchain',sz:15,m:0.7},
-  {id:'Ton',l:'Ton',g:'blockchain',d:'Blockchain',sz:15,m:0.7},
-  {id:'UTEX',l:'UTEX',g:'exchange',d:'Exchange',sz:32,m:15},
-  {id:'WhiteBIT',l:'WhiteBIT',g:'exchange',d:'Exchange',sz:32,m:15},
-  {id:'Wyckoff_Company',l:'Wyckoff Company',g:'organization',d:'Organization',sz:28,m:1.8},
-  {id:'XXXHunters_bot',l:'XXXHunters_bot',g:'other',d:'Other',sz:20,m:1.2},
-  {id:'crypto_rostik_TG',l:'crypto_rostik TG',g:'other',d:'Other',sz:20,m:1.2},
-  {id:'cryptocommunity_ai',l:'cryptocommunity.ai',g:'other',d:'Other',sz:20,m:1.2},
-  {id:'dust_link',l:'dust.link',g:'other',d:'Other',sz:20,m:1.2},
-  {id:'headIinersadmin',l:'headIinersadmin',g:'other',d:'Other',sz:20,m:1.2},
-  {id:'headliners_traders_bot',l:'headliners_traders_bot',g:'other',d:'Other',sz:20,m:1.2},
-  {id:'headlinerslinks_com',l:'headlinerslinks.com',g:'other',d:'Other',sz:20,m:1.2},
-  {id:'kirillevans_com',l:'kirillevans.com',g:'other',d:'Other',sz:20,m:1.2},
-  {id:'nainspire_TG',l:'nainspire TG',g:'other',d:'Other',sz:20,m:1.2},
-  {id:'Дневник_активов',l:'Дневник активов',g:'media',d:'Media',sz:28,m:1.8}
+  {id:'UTEX',l:'UTEX',g:'exchange',sz:32,m:15},
+  {id:'Binance',l:'Binance',g:'exchange',sz:32,m:15},
+  {id:'OKX',l:'OKX',g:'exchange',sz:32,m:15},
+  {id:'Bybit',l:'Bybit',g:'exchange',sz:32,m:15},
+  {id:'BingX',l:'BingX',g:'exchange',sz:32,m:15},
+  {id:'Bitget',l:'Bitget',g:'exchange',sz:32,m:15},
+  {id:'WhiteBIT',l:'WhiteBIT',g:'exchange',sz:32,m:15},
+  {id:'Coinbase',l:'Coinbase',g:'exchange',sz:32,m:15},
+  {id:'Kraken',l:'Kraken',g:'exchange',sz:32,m:15},
+  {id:'HashHedge',l:'HashHedge',g:'project',sz:22,m:4},
+  {id:'Headliners',l:'Headliners',g:'media',sz:34,m:6},
+  {id:'headlinerslinks_com',l:'headlinerslinks.com',g:'other',sz:20,m:1.2},
+  {id:'headliners_traders_bot',l:'headliners_traders_bot',g:'other',sz:20,m:1.2},
+  {id:'Nikita_Anufriev',l:'Nikita Anufriev',g:'person',sz:26,m:3},
+  {id:'Headliners_YouTube_Main',l:'Headliners YouTube Main',g:'other',sz:20,m:1.2},
+  {id:'Headliners_TradeLab',l:'Headliners TradeLab',g:'other',sz:20,m:1.2},
+  {id:'nainspire_TG',l:'nainspire TG',g:'other',sz:20,m:1.2},
+  {id:'Headliners_Crypto_TG',l:'Headliners Crypto TG',g:'other',sz:20,m:1.2},
+  {id:'Kirill_Evans',l:'Kirill Evans',g:'media',sz:28,m:1.8},
+  {id:'CoinW',l:'CoinW',g:'organization',sz:28,m:1.8},
+  {id:'PRO_BLOCKCHAIN',l:'PRO BLOCKCHAIN',g:'media',sz:28,m:1.8},
+  {id:'Roman_Tomera',l:'Roman Tomera',g:'media',sz:28,m:1.8},
+  {id:'RDeni',l:'RDeni',g:'media',sz:28,m:1.8},
+  {id:'ForkLog',l:'ForkLog',g:'media',sz:28,m:1.8},
+  {id:'Wyckoff_Company',l:'Wyckoff Company',g:'organization',sz:28,m:1.8},
+  {id:'CryptoCapo_TG',l:'CryptoCapo TG',g:'media',sz:28,m:1.8},
+  {id:'Cryptology_Education',l:'Cryptology Education',g:'media',sz:28,m:1.8},
+  {id:'CRYPTUS_MEDIA',l:'CRYPTUS MEDIA',g:'media',sz:28,m:1.8},
+  {id:'SLEZY_SATOSHI',l:'SLEZY SATOSHI',g:'media',sz:28,m:1.8},
+  {id:'Дневник_активов',l:'Дневник активов',g:'media',sz:28,m:1.8},
+  {id:'Prometheus_Bitcoin',l:'Prometheus Bitcoin',g:'media',sz:28,m:1.8},
+  {id:'Crypto_Falcon',l:'Crypto Falcon',g:'media',sz:28,m:1.8},
+  {id:'Crypto_Signals_VIP',l:'Crypto Signals VIP',g:'media',sz:28,m:1.8},
+  {id:'SerCrypto_channel',l:'SerCrypto channel',g:'media',sz:28,m:1.8},
+  {id:'DOUBLETOP',l:'DOUBLETOP',g:'media',sz:28,m:1.8},
+  {id:'CRYPTOR_BLOG',l:'CRYPTOR BLOG',g:'media',sz:28,m:1.8},
+  {id:'CryptoInside',l:'CryptoInside',g:'media',sz:28,m:1.8},
+  {id:'BREIDO_Trade',l:'BREIDO Trade',g:'media',sz:28,m:1.8},
+  {id:'Bondar_Scalp',l:'Bondar Scalp',g:'media',sz:28,m:1.8},
+  {id:'Crypto_Scalp_Signals',l:'Crypto Scalp Signals',g:'media',sz:28,m:1.8},
+  {id:'ProBoy_Scalp',l:'ProBoy Scalp',g:'media',sz:28,m:1.8},
+  {id:'Skalping_DIGAHKA',l:'Skalping DIGAHKA',g:'media',sz:28,m:1.8},
+  {id:'TAIP_Trade',l:'TAIP Trade',g:'media',sz:28,m:1.8},
+  {id:'Altcoin_Trading_Signals',l:'Altcoin Trading Signals',g:'media',sz:28,m:1.8},
+  {id:'Crypto_Signal_Hub',l:'Crypto Signal Hub',g:'media',sz:28,m:1.8},
+  {id:'Trader_signals_RU',l:'Trader signals RU',g:'media',sz:28,m:1.8},
+  {id:'Drazor',l:'Drazor',g:'media',sz:28,m:1.8},
+  {id:'Gerchik_Trading_Ecosystem',l:'Gerchik Trading Ecosystem',g:'media',sz:28,m:1.8},
+  {id:'INSTARDING',l:'INSTARDING',g:'media',sz:28,m:1.8},
+  {id:'Peersynth_Trader',l:'Peersynth Trader',g:'media',sz:28,m:1.8},
+  {id:'Vokari',l:'Vokari',g:'media',sz:28,m:1.8},
+  {id:'Биржевик_Акции',l:'Биржевик Акции',g:'media',sz:28,m:1.8},
+  {id:'Илья_Коровин',l:'Илья Коровин',g:'media',sz:28,m:1.8},
+  {id:'Мемы_от_трейдеров',l:'Мемы от трейдеров',g:'media',sz:28,m:1.8},
+  {id:'Сигналы_МосБиржа',l:'Сигналы МосБиржа',g:'media',sz:28,m:1.8},
+  {id:'Центр_Прорыва',l:'Центр Прорыва',g:'media',sz:28,m:1.8},
+  {id:'Школа_трейдинга_Ерина_Романа',l:'Школа трейдинга Ерина Романа',g:'media',sz:28,m:1.8},
+  {id:'CryptoFateev',l:'CryptoFateev',g:'media',sz:28,m:1.8},
+  {id:'Mamkin_Trader',l:'Mamkin Trader',g:'media',sz:28,m:1.8},
+  {id:'Tomas_Kralov',l:'Tomas Kralov',g:'person',sz:28,m:1.8},
+  {id:'CoinW_Telegram',l:'CoinW Telegram',g:'other',sz:20,m:1.2},
+  {id:'headIinersadmin',l:'headIinersadmin',g:'other',sz:20,m:1.2},
+  {id:'Evans_Crypto_TG',l:'Evans Crypto TG',g:'other',sz:20,m:1.2},
+  {id:'cryptocommunity_ai',l:'cryptocommunity.ai',g:'other',sz:20,m:1.2},
+  {id:'kirillevans_com',l:'kirillevans.com',g:'other',sz:20,m:1.2},
+  {id:'dust_link',l:'dust.link',g:'other',sz:20,m:1.2},
+  {id:'MicronCryptoBot',l:'MicronCryptoBot',g:'other',sz:20,m:1.2},
+  {id:'CrypTomera_TG',l:'CrypTomera TG',g:'other',sz:20,m:1.2},
+  {id:'XXXHunters_bot',l:'XXXHunters_bot',g:'other',sz:20,m:1.2},
+  {id:'Pro_Block_Bot',l:'Pro_Block_Bot',g:'other',sz:20,m:1.2},
+  {id:'SleziSatoshi_TG',l:'SleziSatoshi TG',g:'other',sz:20,m:1.2},
+  {id:'crypto_rostik_TG',l:'crypto_rostik TG',g:'other',sz:20,m:1.2},
+  {id:'Bitcoin',l:'⛓ Bitcoin',g:'blockchain',sz:15,m:0.7},
+  {id:'Ethereum',l:'⛓ Ethereum',g:'blockchain',sz:15,m:0.7},
+  {id:'Base',l:'⛓ Base',g:'blockchain',sz:15,m:0.7},
+  {id:'Ton',l:'⛓ Ton',g:'blockchain',sz:15,m:0.7},
+  {id:'Sui',l:'⛓ Sui',g:'blockchain',sz:15,m:0.7},
+  {id:'Solana',l:'⛓ Solana',g:'blockchain',sz:15,m:0.7},
+  {id:'Cz',l:'Cz',g:'person',sz:28,m:1.8},
+  {id:'Near',l:'⛓ Near',g:'blockchain',sz:15,m:0.7}
 ];
 var EE=[
   {f:'Headliners',t:'headlinerslinks_com',l:'subdomain',d:'Headliners → subdomain → headlinerslinks_com'},
@@ -155,6 +179,7 @@ var EE=[
   {f:'Headliners',t:'HashHedge',l:'partner',d:'Headliners → partner → HashHedge'},
   {f:'Kirill_Evans',t:'Headliners',l:'competitor',d:'Kirill_Evans → competitor → Headliners'},
   {f:'Headliners',t:'CoinW',l:'partner',d:'Headliners → partner → CoinW'},
+  {f:'Headliners',t:'PRO_BLOCKCHAIN',l:'competitor',d:'Headliners → competitor → PRO_BLOCKCHAIN'},
   {f:'Roman_Tomera',t:'Headliners',l:'competitor',d:'Roman_Tomera → competitor → Headliners'},
   {f:'RDeni',t:'Headliners',l:'competitor',d:'RDeni → competitor → Headliners'},
   {f:'Headliners',t:'Kirill_Evans',l:'competitor',d:'Headliners → competitor → Kirill_Evans'},
@@ -163,16 +188,39 @@ var EE=[
   {f:'Headliners',t:'RDeni',l:'competitor',d:'Headliners → competitor → RDeni'},
   {f:'Headliners',t:'Wyckoff_Company',l:'competitor',d:'Headliners → competitor → Wyckoff_Company'},
   {f:'Headliners',t:'CryptoCapo_TG',l:'competitor',d:'Headliners → competitor → CryptoCapo_TG'},
-  {f:'Headliners',t:'Crypto_Signals_VIP',l:'competitor',d:'Headliners → competitor → Crypto_Signals_VIP'},
   {f:'Headliners',t:'Cryptology_Education',l:'competitor',d:'Headliners → competitor → Cryptology_Education'},
   {f:'Headliners',t:'CRYPTUS_MEDIA',l:'competitor',d:'Headliners → competitor → CRYPTUS_MEDIA'},
   {f:'PRO_BLOCKCHAIN',t:'Headliners',l:'competitor',d:'PRO_BLOCKCHAIN → competitor → Headliners'},
   {f:'SLEZY_SATOSHI',t:'Headliners',l:'competitor',d:'SLEZY_SATOSHI → competitor → Headliners'},
   {f:'Headliners',t:'Дневник_активов',l:'competitor',d:'Headliners → competitor → Дневник_активов'},
-  {f:'Headliners',t:'SerCrypto_channel',l:'competitor',d:'Headliners → competitor → SerCrypto_channel'},
   {f:'Headliners',t:'Prometheus_Bitcoin',l:'competitor',d:'Headliners → competitor → Prometheus_Bitcoin'},
   {f:'Headliners',t:'UTEX',l:'partner',d:'Headliners → partner → UTEX'},
+  {f:'Headliners',t:'Crypto_Falcon',l:'competitor',d:'Headliners → competitor → Crypto_Falcon'},
+  {f:'Headliners',t:'Crypto_Signals_VIP',l:'competitor',d:'Headliners → competitor → Crypto_Signals_VIP'},
+  {f:'Headliners',t:'SerCrypto_channel',l:'competitor',d:'Headliners → competitor → SerCrypto_channel'},
   {f:'Headliners',t:'DOUBLETOP',l:'competitor',d:'Headliners → competitor → DOUBLETOP'},
+  {f:'Headliners',t:'CRYPTOR_BLOG',l:'competitor',d:'Headliners → competitor → CRYPTOR_BLOG'},
+  {f:'Headliners',t:'CryptoInside',l:'competitor',d:'Headliners → competitor → CryptoInside'},
+  {f:'Headliners',t:'BREIDO_Trade',l:'competitor',d:'Headliners → competitor → BREIDO_Trade'},
+  {f:'Headliners',t:'Bondar_Scalp',l:'competitor',d:'Headliners → competitor → Bondar_Scalp'},
+  {f:'Headliners',t:'Crypto_Scalp_Signals',l:'competitor',d:'Headliners → competitor → Crypto_Scalp_Signals'},
+  {f:'Headliners',t:'ProBoy_Scalp',l:'competitor',d:'Headliners → competitor → ProBoy_Scalp'},
+  {f:'Headliners',t:'Skalping_DIGAHKA',l:'competitor',d:'Headliners → competitor → Skalping_DIGAHKA'},
+  {f:'Headliners',t:'TAIP_Trade',l:'competitor',d:'Headliners → competitor → TAIP_Trade'},
+  {f:'Headliners',t:'Altcoin_Trading_Signals',l:'competitor',d:'Headliners → competitor → Altcoin_Trading_Signals'},
+  {f:'Headliners',t:'Crypto_Signal_Hub',l:'competitor',d:'Headliners → competitor → Crypto_Signal_Hub'},
+  {f:'Headliners',t:'Trader_signals_RU',l:'competitor',d:'Headliners → competitor → Trader_signals_RU'},
+  {f:'Headliners',t:'Drazor',l:'competitor',d:'Headliners → competitor → Drazor'},
+  {f:'Headliners',t:'Gerchik_Trading_Ecosystem',l:'competitor',d:'Headliners → competitor → Gerchik_Trading_Ecosystem'},
+  {f:'Headliners',t:'INSTARDING',l:'competitor',d:'Headliners → competitor → INSTARDING'},
+  {f:'Headliners',t:'Peersynth_Trader',l:'competitor',d:'Headliners → competitor → Peersynth_Trader'},
+  {f:'Headliners',t:'Vokari',l:'competitor',d:'Headliners → competitor → Vokari'},
+  {f:'Headliners',t:'Биржевик_Акции',l:'competitor',d:'Headliners → competitor → Биржевик_Акции'},
+  {f:'Headliners',t:'Илья_Коровин',l:'competitor',d:'Headliners → competitor → Илья_Коровин'},
+  {f:'Headliners',t:'Мемы_от_трейдеров',l:'competitor',d:'Headliners → competitor → Мемы_от_трейдеров'},
+  {f:'Headliners',t:'Сигналы_МосБиржа',l:'competitor',d:'Headliners → competitor → Сигналы_МосБиржа'},
+  {f:'Headliners',t:'Центр_Прорыва',l:'competitor',d:'Headliners → competitor → Центр_Прорыва'},
+  {f:'Headliners',t:'Школа_трейдинга_Ерина_Романа',l:'competitor',d:'Headliners → competitor → Школа_трейдинга_Ерина_Романа'},
   {f:'CoinW',t:'CoinW_Telegram',l:'has_account',d:'CoinW → has_account → CoinW_Telegram'},
   {f:'Headliners_YouTube_Main',t:'Nikita_Anufriev',l:'founder',d:'Headliners_YouTube_Main → founder → Nikita_Anufriev'},
   {f:'nainspire_TG',t:'Nikita_Anufriev',l:'subdomain',d:'nainspire_TG → subdomain → Nikita_Anufriev'},
@@ -200,12 +248,14 @@ var EE=[
   {f:'SLEZY_SATOSHI',t:'Bitget',l:'partner',d:'SLEZY_SATOSHI → partner → Bitget'},
   {f:'RDeni',t:'crypto_rostik_TG',l:'subdomain',d:'RDeni → subdomain → crypto_rostik_TG'},
   {f:'RDeni',t:'WhiteBIT',l:'partner',d:'RDeni → partner → WhiteBIT'},
+  {f:'Crypto_Falcon',t:'Bybit',l:'partner',d:'Crypto_Falcon → partner → Bybit'},
   {f:'Дневник_активов',t:'Bybit',l:'partner',d:'Дневник_активов → partner → Bybit'},
   {f:'Дневник_активов',t:'Binance',l:'partner',d:'Дневник_активов → partner → Binance'},
   {f:'Cryptology_Education',t:'OKX',l:'partner',d:'Cryptology_Education → partner → OKX'},
   {f:'Prometheus_Bitcoin',t:'Binance',l:'partner',d:'Prometheus_Bitcoin → partner → Binance'},
   {f:'DOUBLETOP',t:'Binance',l:'partner',d:'DOUBLETOP → partner → Binance'},
   {f:'CryptoFateev',t:'Binance',l:'partner',d:'CryptoFateev → partner → Binance'},
+  {f:'CryptoInside',t:'Binance',l:'partner',d:'CryptoInside → partner → Binance'},
   {f:'Binance',t:'Coinbase',l:'mentioned_in',d:'Binance → mentioned_in → Coinbase'},
   {f:'Bitcoin',t:'Binance',l:'mentioned_in',d:'Bitcoin → mentioned_in → Binance'},
   {f:'Ethereum',t:'Binance',l:'mentioned_in',d:'Ethereum → mentioned_in → Binance'},
@@ -214,48 +264,18 @@ var EE=[
   {f:'Sui',t:'Binance',l:'mentioned_in',d:'Sui → mentioned_in → Binance'},
   {f:'Solana',t:'Binance',l:'mentioned_in',d:'Solana → mentioned_in → Binance'},
   {f:'Cz',t:'Binance',l:'mentioned_in',d:'Cz → mentioned_in → Binance'},
-  {f:'Crypto_Falcon',t:'Bybit',l:'partner',d:'Crypto_Falcon → partner → Bybit'},
   {f:'Bitcoin',t:'Bybit',l:'mentioned_in',d:'Bitcoin → mentioned_in → Bybit'},
   {f:'Ethereum',t:'Bybit',l:'mentioned_in',d:'Ethereum → mentioned_in → Bybit'},
   {f:'Ton',t:'Bybit',l:'mentioned_in',d:'Ton → mentioned_in → Bybit'},
   {f:'Near',t:'Bybit',l:'mentioned_in',d:'Near → mentioned_in → Bybit'},
   {f:'Kraken',t:'Bybit',l:'mentioned_in',d:'Kraken → mentioned_in → Bybit'}
-];// === GRAPH ===
-var net=null;
-
-var BIG={'headliners':1,'kirillevans':1,'romantomera':1,'problockchain':1,'forklog':1,'doubletop':1,'gerchik':1,'cryptology':1,'cryptofateev':1,
-  'cryptoinside':1,'nikitaanufriev':1,'headlinersru':1,'cryptofalcon':1,'tomaskralov':1,'wyckoff':1,'prometheusbtc':1,
-  'slezysatoshi':1,'rdeni':1,'sercrypto':1,'instarding':1,'iliakorovin':1,'mamkintrader':1};
-var MED={'gateio':1,'bingx':1,'bitget':1,'coinw':1,'whitebit':1,'dnevnik':1,'birzhevik':1,'centrproryva':1,'shkolaerina':1,'sercryptoch':1,'prometheuscrypto':1};
-
-function initGraph(){
-  var nodes=new vis.DataSet(NN.map(function(n){
-    var ec=C[n.g]||'#888';
-    // 3-layer structure:
-    // Layer 1: Exchanges (центр) — mass=15, size=32
-    // Layer 2: Tools (средний слой) — mass=3-4, size=14-22
-    // Layer 3: Channels/competitors (внешний слой) — mass=0.8-1.8, size=16-30
-    var m,sz;
-    if(n.g==='exchange'){m=15; sz=32;}
-    else if(n.g==='tool'){m=3; sz=n.id in BIG?20:(n.id in MED?16:13);}
-    else{ // competitor/channel
-      if(n.id in BIG){m=1.8; sz=28;}
-      else if(n.id in MED){m=1.2; sz=20;}
-      else{m=0.7; sz=15;}
-    }
-    // Special sizing for key nodes
-    if(n.id==='headliners'){m=6; sz=34;}
-    if(n.id==='nikitaanufriev'){m=3; sz=26;}
-    
-    return{id:n.id,label:n.l,group:n.g,
-      color:{background:ec,border:'#fff',
-        highlight:{background:'#ffff88',border:ec},
+];
         hover:{background:'#ffff88',border:ec}},
       font:{color:'#fff',strokeWidth:3,strokeColor:'#000',size:Math.min(sz*0.38,13),multi:true,bold:true},
       borderWidth:2,borderWidthSelected:4,size:sz,
       shape:n.g==='exchange'?'box':'dot',mass:m};
   }));
-  var edgeColor={'partner':'#ffd93d','competitor':'#ff6b6b','founder':'#00d4aa','subdomain':'#888','mention':'#555','account':'#888','employee':'#aaa'};
+
   var edges=new vis.DataSet(EE.map(function(e,i){
     return{id:i,from:e.f,to:e.t,label:e.l,title:e.d,
       color:{color:edgeColor[e.l]||'#555',highlight:'#fff',hover:'#fff'},
