@@ -1,336 +1,414 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Хедлайнеры — граф связей</title>
 <script src="https://unpkg.com/vis-data@7.1.4/standalone/umd/vis-data.min.js"></script>
 <script src="https://unpkg.com/vis-network@9.1.6/standalone/umd/vis-network.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0f0f1a;color:#e0e0e0}
-#header{display:flex;align-items:center;justify-content:space-between;padding:8px 16px;background:#1a1a2e;border-bottom:1px solid #2a2a4a;flex-shrink:0}
-#header h2{color:#00d4aa;font-size:16px}
-#header .sub{color:#888;font-size:11px}
-#header .badge{background:#2a2a4a;padding:2px 10px;border-radius:10px;font-size:10px;color:#aaa}
-#main{display:flex;flex:1;height:calc(100vh - 42px)}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0f0f1a;color:#e0e0e0;overflow:hidden}
+#header{display:flex;align-items:center;padding:6px 14px;background:#1a1a2e;border-bottom:1px solid #2a2a4a;gap:10px}
+#header h2{color:#00d4aa;font-size:14px;white-space:nowrap}
+#header .sub{color:#888;font-size:10px}
+#header .badge{background:#2a2a4a;padding:2px 10px;border-radius:10px;font-size:10px;color:#aaa;margin-left:auto}
+#main{display:flex;height:calc(100vh - 36px)}
 #graph-wrap{flex:1;position:relative;background:#0f0f1a;overflow:hidden}
 #graph-canvas{position:absolute;inset:0}
 #graph-overlay{position:absolute;top:8px;right:8px;z-index:10;display:flex;gap:4px}
-#graph-overlay button{background:#1a1a2e;border:1px solid #2a2a4a;color:#ccc;padding:5px 10px;border-radius:5px;cursor:pointer;font-size:11px}
+#graph-overlay button{background:#1a1a2e;border:1px solid #2a2a4a;color:#ccc;padding:4px 8px;border-radius:4px;cursor:pointer;font-size:10px}
 #graph-overlay button:hover{background:#2a2a4a}
-#graph-legend{position:absolute;bottom:12px;left:12px;background:#1a1a2e;border:1px solid #2a2a4a;border-radius:6px;padding:8px 12px;z-index:10;font-size:10px;opacity:.9}
-#graph-legend .row{display:flex;align-items:center;gap:5px;margin:2px 0}
-#graph-legend .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
-#graph-legend .dot.exchange{background:#f87171}
-#graph-legend .dot.tool{background:#d1d5db}
-#graph-legend .dot.competitor{background:#c084fc}
-#sidebar{width:400px;background:#1a1a2e;border-left:1px solid #2a2a4a;display:flex;flex-direction:column;overflow:hidden;flex-shrink:0}
-#sidebar .tabs{display:flex;border-bottom:1px solid #2a2a4a;flex-shrink:0}
-#sidebar .tabs button{flex:1;padding:8px;background:none;border:none;color:#666;cursor:pointer;font-size:11px;border-bottom:2px solid transparent;transition:all .2s}
+#legend{position:absolute;bottom:10px;left:10px;z-index:10;display:flex;flex-direction:column;gap:3px;font-size:10px;background:#1a1a2ee0;border:1px solid #2a2a4a;border-radius:6px;padding:8px 10px}
+#legend .row{display:flex;align-items:center;gap:6px;color:#ccc;font-size:10px}
+#legend .dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+#legend .line{width:20px;height:2px;display:inline-block;border-radius:1px}
+#legend .title{color:#aaa;font-weight:bold;font-size:10px;margin-bottom:2px}
+#legend .divider{height:1px;background:#2a2a4a;margin:4px 0}
+#sidebar{width:380px;background:#1a1a2e;border-left:1px solid #2a2a4a;display:flex;flex-direction:column;overflow:hidden}
+#sidebar .tabs{display:flex;border-bottom:1px solid #2a2a4a}
+#sidebar .tabs button{flex:1;padding:7px;background:none;border:none;color:#666;cursor:pointer;font-size:10px;border-bottom:2px solid transparent}
 #sidebar .tabs button.active{color:#00d4aa;border-bottom-color:#00d4aa}
-#sidebar .tab-content{flex:1;overflow-y:auto;padding:12px;display:none;font-size:12px}
+#sidebar .tab-content{flex:1;overflow-y:auto;padding:10px;display:none;font-size:11px}
 #sidebar .tab-content.active{display:block}
-#sidebar .tab-content h3{color:#00d4aa;font-size:14px;margin-bottom:8px}
-#sidebar .tab-content h4{color:#aaa;font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin:10px 0 4px}
-.df{margin-bottom:6px}
-.df .lbl{color:#666;font-size:10px;text-transform:uppercase;letter-spacing:.5px}
-.df .val{color:#e0e0e0;font-size:13px;margin-top:1px}
-.rc{background:#15152a;border:1px solid #252545;border-radius:6px;padding:8px 10px;margin-bottom:6px}
-.rc .target{color:#c084fc;font-size:13px;font-weight:600}
-.rc .desc{color:#ccc;font-size:12px;margin:3px 0}
-.rc .srclbl{color:#888;font-size:10px;margin-top:4px;display:block}
-.empty-state{color:#555;font-size:12px;text-align:center;padding:30px 16px}
-.loading{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#555;font-size:14px;z-index:5}
-@media(max-width:768px){#main{flex-direction:column}#sidebar{width:100%;height:40vh;border-left:none;border-top:1px solid #2a2a4a}}
+#sidebar .tab-content h3{color:#00d4aa;font-size:13px;margin-bottom:6px}
+.df{margin-bottom:5px}
+.df .lbl{color:#666;font-size:9px;text-transform:uppercase;letter-spacing:.5px}
+.df .val{color:#e0e0e0;font-size:12px;margin-top:1px}
+.rc{background:#15152a;border:1px solid #252545;border-radius:5px;padding:6px 8px;margin-bottom:5px}
+.rc .target{color:#c084fc;font-size:12px;font-weight:600}
+.rc .desc{color:#ccc;font-size:11px;margin:2px 0}
+.empty-state{color:#555;font-size:11px;text-align:center;padding:20px}
+@media(max-width:768px){#main{flex-direction:column}#sidebar{width:100%;height:35vh}}
 </style>
 </head>
 <body>
 <div id="header">
-  <div>
-    <h2>🏛 Хедлайнеры — Граф связей</h2>
-    <div class="sub">8 бирж · 16 инструментов · 37 конкурентов</div>
-  </div>
-  <div class="badge">Кликни на узле для деталей</div>
+  <h2>🏛 Хедлайнеры — Граф связей</h2>
+  <div class="sub">8 бирж · 80 сущностей · 100 связей</div>
+  <div class="badge">Кликни на узле → детали</div>
 </div>
 <div id="main">
 <div id="graph-wrap">
-<div class="loading" id="loading">Загрузка графа...</div>
 <div id="graph-canvas"></div>
 <div id="graph-overlay">
-<button onclick="zoomIn()">+</button>
-<button onclick="zoomOut()">-</button>
+<button onclick="zoomIn()">➕</button>
+<button onclick="zoomOut()">➖</button>
 <button onclick="zoomFit()">Fit</button>
-<button onclick="resetView()">Reset</button>
 </div>
-<div id="graph-legend">
-<div class="row"><span class="dot exchange"></span>Биржи</div>
-<div class="row"><span class="dot tool"></span>Инструменты</div>
-<div class="row"><span class="dot competitor"></span>Конкуренты</div>
+<div id="legend">
+  <div class="title">🔺 Пирамида</div>
+  <div class="row"><span class="dot" style="background:#f87171"></span> Биржи (центр)</div>
+  <div class="row"><span class="dot" style="background:#d1d5db"></span> Инструменты</div>
+  <div class="row"><span class="dot" style="background:#c084fc"></span> Каналы</div>
+  <div class="row"><span class="dot" style="background:#667799"></span> Субдомены/Прочее</div>
+  <div class="divider"></div>
+  <div class="title">🔗 Связи</div>
+  <div class="row"><span class="line" style="background:#ffd93d"></span> Партнёр</div>
+  <div class="row"><span class="line" style="background:#ff6b6b"></span> Конкурент</div>
+  <div class="row"><span class="line" style="background:#00d4aa"></span> Основатель</div>
+  <div class="row"><span class="line" style="background:#667799"></span> Субдомен/Упоминание</div>
 </div>
 </div>
 <div id="sidebar">
-<div class="tabs"><button class="active" onclick="switchTab('entity')">Сущность</button><button onclick="switchTab('relations')">Связи</button></div>
-<div class="tab-content active" id="tab-entity"><div class="empty-state">Кликни на любой узел</div></div>
-<div class="tab-content" id="tab-relations"><div class="empty-state">Кликни на узел для связей</div></div>
+  <div class="tabs"><button class="active" onclick="switchTab('entity')">Сущность</button><button onclick="switchTab('relations')">Связи</button></div>
+  <div class="tab-content active" id="tab-entity"><div class="empty-state">Кликни на узел</div></div>
+  <div class="tab-content" id="tab-relations"><div class="empty-state">Кликни на узел</div></div>
 </div>
 </div>
-
 <script>
 // === DATA ===
+var edgeColor={partner:'#ffd93d',competitor:'#ff6b6b',founder:'#00d4aa',subdomain:'#667799',mention:'#556677',account:'#667799',employee:'#667799'};
+var C={exchange:'#f87171',tool:'#d1d5db',competitor:'#c084fc',project:'#888',other:'#667799',blockchain:'#667799',person:'#667799',organization:'#667799',media:'#c084fc'};
 
-// Colors per group
-var C={exchange:'#f87171',tool:'#d1d5db',competitor:'#c084fc'};
+// AUTO-GENERATED from headliners_mermaid_ru.txt
 
-// Nodes
+var edgeColor={"partner": "#ffd93d", "competitor": "#ff6b6b", "founder": "#00d4aa", "subdomain": "#667799", "mention": "#556677", "account": "#667799", "employee": "#888899"};
 var NN=[
-  // Exchanges
-  {id:'binance',l:'Binance',g:'exchange',d:'Крупнейшая криптобиржа. Партнёр многих крипто-каналов.'},
-  {id:'bingx',l:'BingX',g:'exchange',d:'Криптобиржа с социальным трейдингом.'},
-  {id:'bitget',l:'Bitget',g:'exchange',d:'Криптобиржа с фокусом на копитрейдинг.'},
-  {id:'bybit',l:'Bybit',g:'exchange',d:'Криптобиржа, популярная среди трейдеров.'},
-  {id:'coinw',l:'CoinW',g:'exchange',d:'Криптобиржа. Партнёр Headliners.'},
-  {id:'gateio',l:'Gate.io',g:'exchange',d:'Криптобиржа с широким списком токенов.'},
-  {id:'okx',l:'OKX',g:'exchange',d:'Крупная криптобиржа с экосистемой Web3.'},
-  {id:'whitebit',l:'WhiteBIT',g:'exchange',d:'Криптобиржа из Европы.'},
-
-  // Tools
-  {id:'altcoinsignals',l:'Altcoin Trading\nSignals',g:'tool',d:'Сервис сигналов по альткоинам.'},
-  {id:'breidotrade',l:'BREIDO Trade',g:'tool',d:'Торговый сигнальный сервис.'},
-  {id:'bondarcscalp',l:'Bondar CScalp',g:'tool',d:'Скальпинг-сигналы от Bondar.'},
-  {id:'cryptoscalp',l:'Crypto Scalp\nSignals',g:'tool',d:'Сигналы для скальпинга.'},
-  {id:'cryptosignalhub',l:'Crypto Signal\nHub',g:'tool',d:'Хаб крипто-сигналов.'},
-  {id:'cryptosignals',l:'Crypto Signals\n©',g:'tool',d:'Сервис торговых сигналов.'},
-  {id:'cryptocapotg',l:'CryptoCapo TG',g:'tool',d:'Аналитический канал CryptoCapo.'},
-  {id:'hashhedge',l:'HashHedge',g:'tool',d:'Торговый сигнальный сервис. Партнёр Headliners.'},
-  {id:'proboy',l:'ProBoy',g:'tool',d:'Сигнальный сервис ProBoy.'},
-  {id:'tradersignalsru',l:'Trader signals\nRU',g:'tool',d:'Сигналы для трейдеров (RU).'},
-  {id:'utex',l:'UTEX',g:'tool',d:'Партнёрский инструмент Headliners.'},
-  {id:'memestraders',l:'Мемы от\nтрейдеров',g:'tool',d:'Развлекательный канал про мемы.'},
-  {id:'signalsmoex',l:'Сигналы\nМосБиржа',g:'tool',d:'Сигналы по Московской бирже.'},
-  {id:'skalpingdigahka',l:'Скальпинг с\nDIGAHKA',g:'tool',d:'Скальпинг-сигналы от DIGAHKA.'},
-  {id:'taip',l:'ТАЙП',g:'tool',d:'Торговый сигнальный сервис.'},
-  {id:'chatcrypto',l:'Чат\nкриптотрейдеров',g:'tool',d:'Чат для криптотрейдеров.'},
-
-  // Competitors
-  {id:'bondarscalp',l:'Bondar Scalp',g:'competitor',d:'Конкурент в нише скальпинг-сигналов.'},
-  {id:'cryptorblog',l:'CRYPTOR BLOG',g:'competitor',d:'Блог о криптовалютах.'},
-  {id:'cryptusmedia',l:'CRYPTUS\nMEDIA',g:'competitor',d:'Медиа о криптовалютах.'},
-  {id:'cryptofalcon',l:'Crypto Falcon',g:'competitor',d:'Крипто-канал. Партнёр Bybit.'},
-  {id:'cryptosignalsvip',l:'Crypto Signals\nVIP',g:'competitor',d:'VIP-сигналы.'},
-  {id:'cryptofateev',l:'CryptoFateev',g:'competitor',d:'Крипто-аналитик Fateev. Партнёр Binance.'},
-  {id:'cryptoinside',l:'CryptoInside',g:'competitor',d:'Крипто-канал Inside. Партнёр Binance.'},
-  {id:'cryptology',l:'Cryptology',g:'competitor',d:'Крипто-проект Cryptology.'},
-  {id:'cryptologyedu',l:'Cryptology\nEducation',g:'competitor',d:'Образовательный проект Cryptology. Партнёр OKX.'},
-  {id:'doubletop',l:'DOUBLETOP',g:'competitor',d:'Крипто-канал DOUBLE TOP. Партнёр Binance.'},
-  {id:'drazor',l:'Drazor',g:'competitor',d:'Крипто-канал Drazor.'},
-  {id:'forklog',l:'ForkLog',g:'competitor',d:'Медиа о криптовалютах ForkLog.'},
-  {id:'gerchik',l:'Gerchik Trading\nEcosystem',g:'competitor',d:'Экосистема Gerchik.'},
-  {id:'headliners',l:'Headliners',g:'competitor',d:'Подкаст о криптовалютах. Собственность Никиты Ануфриева. Партнёр CoinW.'},
-  {id:'instarding',l:'INSTARDING',g:'competitor',d:'Крипто-канал INSTARDING.'},
-  {id:'kirillevans',l:'Kirill Evans',g:'competitor',d:'Крипто-блогер Kirill Evans. Партнёр Binance.'},
-  {id:'mamkintrader',l:'Mamkin Trader',g:'competitor',d:'Крипто-канал Мамкин Трейдер.'},
-  {id:'nikitaanufriev',l:'Никита\nАнуфриев',g:'competitor',d:'Основатель Headliners и HashHedge.'},
-  {id:'problockchain',l:'PRO\nBLOCKCHAIN',g:'competitor',d:'Крипто-канал PRO BLOCKCHAIN. Партнёр Bybit, BingX, Gate.io.'},
-  {id:'peersynth',l:'Peersynth\nTrader',g:'competitor',d:'Крипто-трейдинг Peersynth.'},
-  {id:'proboyscalp',l:'ProBoy Scalp',g:'competitor',d:'Скальпинг-версия ProBoy.'},
-  {id:'prometheusbtc',l:'Prometheus\nBitcoin',g:'competitor',d:'Крипто-канал Prometheus Bitcoin. Партнёр Binance.'},
-  {id:'prometheuscrypto',l:'Prometheus\nCrypto',g:'competitor',d:'Крипто-канал Prometheus Crypto.'},
-  {id:'rdeni',l:'RDeni',g:'competitor',d:'Крипто-канал RDeni. Партнёр WhiteBIT.'},
-  {id:'romantomera',l:'Roman Tomera',g:'competitor',d:'Крипто-блогер Roman Tomera. Партнёр Binance, Bybit, OKX.'},
-  {id:'slezysatoshi',l:'SLEZY\nSATOSHI',g:'competitor',d:'Крипто-канал SLEZY SATOSHI. Партнёр Bitget.'},
-  {id:'sercrypto',l:'SerCrypto',g:'competitor',d:'Крипто-канал SerCrypto.'},
-  {id:'sercryptoch',l:'SerCrypto\nchannel',g:'competitor',d:'Дополнительный канал SerCrypto. Партнёр Gate.io.'},
-  {id:'skalpingdigahka2',l:'Skalping\nDIGAHKA',g:'competitor',d:'Скальпинг от DIGAHKA.'},
-  {id:'taiptrade',l:'TAIP Trade',g:'competitor',d:'Торговый сервис TAIP.'},
-  {id:'tomaskralov',l:'Tomas Kralov',g:'competitor',d:'Крипто-блогер Tomas Kralov.'},
-  {id:'vokari',l:'Vokari',g:'competitor',d:'Крипто-канал Vokari.'},
-  {id:'wyckoff',l:'Wyckoff\nCompany',g:'competitor',d:'Торговая школа Wyckoff Company.'},
-  {id:'birzhevik',l:'Биржевик\nАкции',g:'competitor',d:'Канал про акции и биржу.'},
-  {id:'dnevnik',l:'Дневник\nактивов',g:'competitor',d:'Канал про управление активами. Партнёр Binance, Bybit.'},
-  {id:'ilyakorovin',l:'Илья Коровин',g:'competitor',d:'Крипто-блогер Илья Коровин.'},
-  {id:'headlinersru',l:'Хедлайнеры',g:'competitor',d:'Русскоязычный бренд Headliners.'},
-  {id:'centrproryva',l:'Центр\nПрорыва',g:'competitor',d:'Крипто-канал Центр Прорыва.'},
-  {id:'shkolaerina',l:'Школа трейдинга\nЕрина Романа',g:'competitor',d:'Образовательный проект.'},
+  {id:'Headliners',l:'Headliners',g:'media',sz:36,m:4},
+  {id:'headlinerslinks_com',l:'headlinerslinks.com',g:'other',sz:14,m:0.7},
+  {id:'headliners_traders_bot',l:'headliners_traders_bot',g:'other',sz:14,m:0.7},
+  {id:'Nikita_Anufriev',l:'Nikita Anufriev',g:'person',sz:28,m:2.5},
+  {id:'Headliners_YouTube_Main',l:'Headliners YouTube Main',g:'other',sz:14,m:0.7},
+  {id:'Headliners_TradeLab',l:'Headliners TradeLab',g:'other',sz:14,m:0.7},
+  {id:'nainspire_TG',l:'nainspire TG',g:'other',sz:14,m:0.7},
+  {id:'Headliners_Crypto_TG',l:'Headliners Crypto TG',g:'other',sz:14,m:0.7},
+  {id:'HashHedge',l:'HashHedge',g:'project',sz:22,m:4},
+  {id:'Kirill_Evans',l:'Kirill Evans',g:'media',sz:34,m:2.5},
+  {id:'CoinW',l:'CoinW',g:'organization',sz:26,m:1.8},
+  {id:'PRO_BLOCKCHAIN',l:'PRO BLOCKCHAIN',g:'media',sz:34,m:2.5},
+  {id:'Roman_Tomera',l:'Roman Tomera',g:'media',sz:34,m:2.5},
+  {id:'RDeni',l:'RDeni',g:'media',sz:26,m:1.8},
+  {id:'ForkLog',l:'ForkLog',g:'media',sz:34,m:2.5},
+  {id:'Wyckoff_Company',l:'Wyckoff Company',g:'organization',sz:34,m:2.5},
+  {id:'CryptoCapo_TG',l:'CryptoCapo TG',g:'media',sz:18,m:1.2},
+  {id:'Cryptology_Education',l:'Cryptology Education',g:'media',sz:26,m:1.8},
+  {id:'CRYPTUS_MEDIA',l:'CRYPTUS MEDIA',g:'media',sz:18,m:1.2},
+  {id:'SLEZY_SATOSHI',l:'SLEZY SATOSHI',g:'media',sz:26,m:1.8},
+  {id:'Дневник_активов',l:'Дневник активов',g:'media',sz:18,m:1.2},
+  {id:'Prometheus_Bitcoin',l:'Prometheus Bitcoin',g:'media',sz:26,m:1.8},
+  {id:'UTEX',l:'UTEX',g:'exchange',sz:32,m:15},
+  {id:'Crypto_Falcon',l:'Crypto Falcon',g:'media',sz:26,m:1.8},
+  {id:'Crypto_Signals_VIP',l:'Crypto Signals VIP',g:'media',sz:18,m:1.2},
+  {id:'SerCrypto_channel',l:'SerCrypto channel',g:'media',sz:18,m:1.2},
+  {id:'DOUBLETOP',l:'DOUBLETOP',g:'media',sz:34,m:2.5},
+  {id:'CRYPTOR_BLOG',l:'CRYPTOR BLOG',g:'media',sz:18,m:1.2},
+  {id:'CryptoInside',l:'CryptoInside',g:'media',sz:26,m:1.8},
+  {id:'BREIDO_Trade',l:'BREIDO Trade',g:'media',sz:18,m:1.2},
+  {id:'Bondar_Scalp',l:'Bondar Scalp',g:'media',sz:18,m:1.2},
+  {id:'Crypto_Scalp_Signals',l:'Crypto Scalp Signals',g:'media',sz:18,m:1.2},
+  {id:'ProBoy_Scalp',l:'ProBoy Scalp',g:'media',sz:18,m:1.2},
+  {id:'Skalping_DIGAHKA',l:'Skalping DIGAHKA',g:'media',sz:18,m:1.2},
+  {id:'TAIP_Trade',l:'TAIP Trade',g:'media',sz:18,m:1.2},
+  {id:'Altcoin_Trading_Signals',l:'Altcoin Trading Signals',g:'media',sz:18,m:1.2},
+  {id:'Crypto_Signal_Hub',l:'Crypto Signal Hub',g:'media',sz:18,m:1.2},
+  {id:'Trader_signals_RU',l:'Trader signals RU',g:'media',sz:18,m:1.2},
+  {id:'Drazor',l:'Drazor',g:'media',sz:26,m:1.8},
+  {id:'Gerchik_Trading_Ecosystem',l:'Gerchik Trading Ecosystem',g:'media',sz:34,m:2.5},
+  {id:'INSTARDING',l:'INSTARDING',g:'media',sz:26,m:1.8},
+  {id:'Peersynth_Trader',l:'Peersynth Trader',g:'media',sz:18,m:1.2},
+  {id:'Vokari',l:'Vokari',g:'media',sz:18,m:1.2},
+  {id:'Биржевик_Акции',l:'Биржевик Акции',g:'media',sz:18,m:1.2},
+  {id:'Илья_Коровин',l:'Илья Коровин',g:'media',sz:18,m:1.2},
+  {id:'Мемы_от_трейдеров',l:'Мемы от трейдеров',g:'media',sz:18,m:1.2},
+  {id:'Сигналы_МосБиржа',l:'Сигналы МосБиржа',g:'media',sz:18,m:1.2},
+  {id:'Центр_Прорыва',l:'Центр Прорыва',g:'media',sz:18,m:1.2},
+  {id:'Школа_трейдинга_Ерина_Романа',l:'Школа трейдинга Ерина Романа',g:'media',sz:18,m:1.2},
+  {id:'CryptoFateev',l:'CryptoFateev',g:'media',sz:26,m:1.8},
+  {id:'Mamkin_Trader',l:'Mamkin Trader',g:'media',sz:26,m:1.8},
+  {id:'Tomas_Kralov',l:'Tomas Kralov',g:'person',sz:18,m:1.2},
+  {id:'CoinW_Telegram',l:'CoinW Telegram',g:'other',sz:14,m:0.7},
+  {id:'headIinersadmin',l:'headIinersadmin',g:'other',sz:14,m:0.7},
+  {id:'Evans_Crypto_TG',l:'Evans Crypto TG',g:'other',sz:14,m:0.7},
+  {id:'cryptocommunity_ai',l:'cryptocommunity.ai',g:'other',sz:14,m:0.7},
+  {id:'kirillevans_com',l:'kirillevans.com',g:'other',sz:14,m:0.7},
+  {id:'Binance',l:'Binance',g:'exchange',sz:32,m:15},
+  {id:'dust_link',l:'dust.link',g:'other',sz:14,m:0.7},
+  {id:'MicronCryptoBot',l:'MicronCryptoBot',g:'other',sz:14,m:0.7},
+  {id:'CrypTomera_TG',l:'CrypTomera TG',g:'other',sz:14,m:0.7},
+  {id:'OKX',l:'OKX',g:'exchange',sz:32,m:15},
+  {id:'Bybit',l:'Bybit',g:'exchange',sz:32,m:15},
+  {id:'XXXHunters_bot',l:'XXXHunters_bot',g:'other',sz:14,m:0.7},
+  {id:'Pro_Block_Bot',l:'Pro_Block_Bot',g:'other',sz:14,m:0.7},
+  {id:'BingX',l:'BingX',g:'exchange',sz:32,m:15},
+  {id:'SleziSatoshi_TG',l:'SleziSatoshi TG',g:'other',sz:14,m:0.7},
+  {id:'Bitget',l:'Bitget',g:'exchange',sz:32,m:15},
+  {id:'crypto_rostik_TG',l:'crypto_rostik TG',g:'other',sz:14,m:0.7},
+  {id:'WhiteBIT',l:'WhiteBIT',g:'exchange',sz:32,m:15},
+  {id:'Coinbase',l:'Coinbase',g:'exchange',sz:32,m:15},
+  {id:'Bitcoin',l:'⛓ Bitcoin',g:'blockchain',sz:14,m:0.7},
+  {id:'Ethereum',l:'⛓ Ethereum',g:'blockchain',sz:14,m:0.7},
+  {id:'Base',l:'⛓ Base',g:'blockchain',sz:14,m:0.7},
+  {id:'Ton',l:'⛓ Ton',g:'blockchain',sz:14,m:0.7},
+  {id:'Sui',l:'⛓ Sui',g:'blockchain',sz:14,m:0.7},
+  {id:'Solana',l:'⛓ Solana',g:'blockchain',sz:14,m:0.7},
+  {id:'Cz',l:'Cz',g:'person',sz:18,m:1.2},
+  {id:'Near',l:'⛓ Near',g:'blockchain',sz:14,m:0.7},
+  {id:'Kraken',l:'Kraken',g:'exchange',sz:32,m:15}
 ];
-
-// Edges
 var EE=[
-  // Exchange -> partner - tools/competitors
-  {f:'bybit',t:'cryptofalcon',l:'partner',d:'Bybit — партнёр Crypto Falcon.'},
-  {f:'binance',t:'cryptofateev',l:'partner',d:'Binance — партнёр CryptoFateev.'},
-  {f:'binance',t:'cryptoinside',l:'partner',d:'Binance — партнёр CryptoInside.'},
-  {f:'okx',t:'cryptologyedu',l:'partner',d:'OKX — партнёр Cryptology Education.'},
-  {f:'binance',t:'doubletop',l:'partner',d:'Binance — партнёр DOUBLETOP.'},
-  {f:'coinw',t:'headliners',l:'partner',d:'CoinW — партнёр Headliners.'},
-  {f:'binance',t:'kirillevans',l:'partner',d:'Binance — партнёр Kirill Evans.'},
-  {f:'bybit',t:'problockchain',l:'partner',d:'Bybit — партнёр PRO BLOCKCHAIN.'},
-  {f:'bingx',t:'problockchain',l:'partner',d:'BingX — партнёр PRO BLOCKCHAIN.'},
-  {f:'gateio',t:'problockchain',l:'partner',d:'Gate.io — партнёр PRO BLOCKCHAIN.'},
-  {f:'binance',t:'prometheusbtc',l:'partner',d:'Binance — партнёр Prometheus Bitcoin.'},
-  {f:'whitebit',t:'rdeni',l:'partner',d:'WhiteBIT — партнёр RDeni.'},
-  {f:'binance',t:'romantomera',l:'partner',d:'Binance — партнёр Roman Tomera.'},
-  {f:'bybit',t:'romantomera',l:'partner',d:'Bybit — партнёр Roman Tomera.'},
-  {f:'okx',t:'romantomera',l:'partner',d:'OKX — партнёр Roman Tomera.'},
-  {f:'bitget',t:'slezysatoshi',l:'partner',d:'Bitget — партнёр SLEZY SATOSHI.'},
-  {f:'gateio',t:'sercryptoch',l:'partner',d:'Gate.io — партнёр SerCrypto channel.'},
-  {f:'binance',t:'dnevnik',l:'partner',d:'Binance — партнёр Дневник активов.'},
-  {f:'bybit',t:'dnevnik',l:'partner',d:'Bybit — партнёр Дневник активов.'},
+  {f:'Headliners',t:'headlinerslinks_com',l:'subdomain',d:'Headliners → subdomain → headlinerslinks_com'},
+  {f:'Headliners',t:'headliners_traders_bot',l:'subdomain',d:'Headliners → subdomain → headliners_traders_bot'},
+  {f:'Nikita_Anufriev',t:'Headliners',l:'founder',d:'Nikita_Anufriev → founder → Headliners'},
+  {f:'Headliners_YouTube_Main',t:'Headliners',l:'subdomain',d:'Headliners_YouTube_Main → subdomain → Headliners'},
+  {f:'Headliners_TradeLab',t:'Headliners',l:'subdomain',d:'Headliners_TradeLab → subdomain → Headliners'},
+  {f:'nainspire_TG',t:'Headliners',l:'subdomain',d:'nainspire_TG → subdomain → Headliners'},
+  {f:'Headliners_Crypto_TG',t:'Headliners',l:'subdomain',d:'Headliners_Crypto_TG → subdomain → Headliners'},
+  {f:'Headliners',t:'HashHedge',l:'partner',d:'Headliners → partner → HashHedge'},
+  {f:'Kirill_Evans',t:'Headliners',l:'competitor',d:'Kirill_Evans → competitor → Headliners'},
+  {f:'Headliners',t:'CoinW',l:'partner',d:'Headliners → partner → CoinW'},
+  {f:'Headliners',t:'PRO_BLOCKCHAIN',l:'competitor',d:'Headliners → competitor → PRO_BLOCKCHAIN'},
+  {f:'Roman_Tomera',t:'Headliners',l:'competitor',d:'Roman_Tomera → competitor → Headliners'},
+  {f:'RDeni',t:'Headliners',l:'competitor',d:'RDeni → competitor → Headliners'},
+  {f:'Headliners',t:'Kirill_Evans',l:'competitor',d:'Headliners → competitor → Kirill_Evans'},
+  {f:'Headliners',t:'Roman_Tomera',l:'competitor',d:'Headliners → competitor → Roman_Tomera'},
+  {f:'Headliners',t:'ForkLog',l:'competitor',d:'Headliners → competitor → ForkLog'},
+  {f:'Headliners',t:'RDeni',l:'competitor',d:'Headliners → competitor → RDeni'},
+  {f:'Headliners',t:'Wyckoff_Company',l:'competitor',d:'Headliners → competitor → Wyckoff_Company'},
+  {f:'Headliners',t:'CryptoCapo_TG',l:'competitor',d:'Headliners → competitor → CryptoCapo_TG'},
+  {f:'Headliners',t:'Cryptology_Education',l:'competitor',d:'Headliners → competitor → Cryptology_Education'},
+  {f:'Headliners',t:'CRYPTUS_MEDIA',l:'competitor',d:'Headliners → competitor → CRYPTUS_MEDIA'},
+  {f:'PRO_BLOCKCHAIN',t:'Headliners',l:'competitor',d:'PRO_BLOCKCHAIN → competitor → Headliners'},
+  {f:'SLEZY_SATOSHI',t:'Headliners',l:'competitor',d:'SLEZY_SATOSHI → competitor → Headliners'},
+  {f:'Headliners',t:'Дневник_активов',l:'competitor',d:'Headliners → competitor → Дневник_активов'},
+  {f:'Headliners',t:'Prometheus_Bitcoin',l:'competitor',d:'Headliners → competitor → Prometheus_Bitcoin'},
+  {f:'Headliners',t:'UTEX',l:'partner',d:'Headliners → partner → UTEX'},
+  {f:'Headliners',t:'Crypto_Falcon',l:'competitor',d:'Headliners → competitor → Crypto_Falcon'},
+  {f:'Headliners',t:'Crypto_Signals_VIP',l:'competitor',d:'Headliners → competitor → Crypto_Signals_VIP'},
+  {f:'Headliners',t:'SerCrypto_channel',l:'competitor',d:'Headliners → competitor → SerCrypto_channel'},
+  {f:'Headliners',t:'DOUBLETOP',l:'competitor',d:'Headliners → competitor → DOUBLETOP'},
+  {f:'Headliners',t:'CRYPTOR_BLOG',l:'competitor',d:'Headliners → competitor → CRYPTOR_BLOG'},
+  {f:'Headliners',t:'CryptoInside',l:'competitor',d:'Headliners → competitor → CryptoInside'},
+  {f:'Headliners',t:'BREIDO_Trade',l:'competitor',d:'Headliners → competitor → BREIDO_Trade'},
+  {f:'Headliners',t:'Bondar_Scalp',l:'competitor',d:'Headliners → competitor → Bondar_Scalp'},
+  {f:'Headliners',t:'Crypto_Scalp_Signals',l:'competitor',d:'Headliners → competitor → Crypto_Scalp_Signals'},
+  {f:'Headliners',t:'ProBoy_Scalp',l:'competitor',d:'Headliners → competitor → ProBoy_Scalp'},
+  {f:'Headliners',t:'Skalping_DIGAHKA',l:'competitor',d:'Headliners → competitor → Skalping_DIGAHKA'},
+  {f:'Headliners',t:'TAIP_Trade',l:'competitor',d:'Headliners → competitor → TAIP_Trade'},
+  {f:'Headliners',t:'Altcoin_Trading_Signals',l:'competitor',d:'Headliners → competitor → Altcoin_Trading_Signals'},
+  {f:'Headliners',t:'Crypto_Signal_Hub',l:'competitor',d:'Headliners → competitor → Crypto_Signal_Hub'},
+  {f:'Headliners',t:'Trader_signals_RU',l:'competitor',d:'Headliners → competitor → Trader_signals_RU'},
+  {f:'Headliners',t:'Drazor',l:'competitor',d:'Headliners → competitor → Drazor'},
+  {f:'Headliners',t:'Gerchik_Trading_Ecosystem',l:'competitor',d:'Headliners → competitor → Gerchik_Trading_Ecosystem'},
+  {f:'Headliners',t:'INSTARDING',l:'competitor',d:'Headliners → competitor → INSTARDING'},
+  {f:'Headliners',t:'Peersynth_Trader',l:'competitor',d:'Headliners → competitor → Peersynth_Trader'},
+  {f:'Headliners',t:'Vokari',l:'competitor',d:'Headliners → competitor → Vokari'},
+  {f:'Headliners',t:'Биржевик_Акции',l:'competitor',d:'Headliners → competitor → Биржевик_Акции'},
+  {f:'Headliners',t:'Илья_Коровин',l:'competitor',d:'Headliners → competitor → Илья_Коровин'},
+  {f:'Headliners',t:'Мемы_от_трейдеров',l:'competitor',d:'Headliners → competitor → Мемы_от_трейдеров'},
+  {f:'Headliners',t:'Сигналы_МосБиржа',l:'competitor',d:'Headliners → competitor → Сигналы_МосБиржа'},
+  {f:'Headliners',t:'Центр_Прорыва',l:'competitor',d:'Headliners → competitor → Центр_Прорыва'},
+  {f:'Headliners',t:'Школа_трейдинга_Ерина_Романа',l:'competitor',d:'Headliners → competitor → Школа_трейдинга_Ерина_Романа'},
+  {f:'CoinW',t:'CoinW_Telegram',l:'has_account',d:'CoinW → has_account → CoinW_Telegram'},
+  {f:'Headliners_YouTube_Main',t:'Nikita_Anufriev',l:'founder',d:'Headliners_YouTube_Main → founder → Nikita_Anufriev'},
+  {f:'nainspire_TG',t:'Nikita_Anufriev',l:'subdomain',d:'nainspire_TG → subdomain → Nikita_Anufriev'},
+  {f:'Nikita_Anufriev',t:'HashHedge',l:'partner',d:'Nikita_Anufriev → partner → HashHedge'},
+  {f:'Headliners_TradeLab',t:'Headliners_YouTube_Main',l:'mentioned_in',d:'Headliners_TradeLab → mentioned_in → Headliners_YouTube_Main'},
+  {f:'Headliners_Crypto_TG',t:'nainspire_TG',l:'mentioned_in',d:'Headliners_Crypto_TG → mentioned_in → nainspire_TG'},
+  {f:'Headliners_Crypto_TG',t:'headIinersadmin',l:'employee',d:'Headliners_Crypto_TG → employee → headIinersadmin'},
+  {f:'Headliners_Crypto_TG',t:'headliners_traders_bot',l:'subdomain',d:'Headliners_Crypto_TG → subdomain → headliners_traders_bot'},
+  {f:'Headliners_Crypto_TG',t:'HashHedge',l:'partner',d:'Headliners_Crypto_TG → partner → HashHedge'},
+  {f:'Kirill_Evans',t:'Evans_Crypto_TG',l:'subdomain',d:'Kirill_Evans → subdomain → Evans_Crypto_TG'},
+  {f:'Kirill_Evans',t:'cryptocommunity_ai',l:'subdomain',d:'Kirill_Evans → subdomain → cryptocommunity_ai'},
+  {f:'Kirill_Evans',t:'kirillevans_com',l:'subdomain',d:'Kirill_Evans → subdomain → kirillevans_com'},
+  {f:'Kirill_Evans',t:'Binance',l:'partner',d:'Kirill_Evans → partner → Binance'},
+  {f:'Kirill_Evans',t:'dust_link',l:'subdomain',d:'Kirill_Evans → subdomain → dust_link'},
+  {f:'Kirill_Evans',t:'MicronCryptoBot',l:'subdomain',d:'Kirill_Evans → subdomain → MicronCryptoBot'},
+  {f:'Roman_Tomera',t:'CrypTomera_TG',l:'subdomain',d:'Roman_Tomera → subdomain → CrypTomera_TG'},
+  {f:'Roman_Tomera',t:'OKX',l:'partner',d:'Roman_Tomera → partner → OKX'},
+  {f:'Roman_Tomera',t:'Binance',l:'partner',d:'Roman_Tomera → partner → Binance'},
+  {f:'Roman_Tomera',t:'Bybit',l:'partner',d:'Roman_Tomera → partner → Bybit'},
+  {f:'PRO_BLOCKCHAIN',t:'XXXHunters_bot',l:'subdomain',d:'PRO_BLOCKCHAIN → subdomain → XXXHunters_bot'},
+  {f:'PRO_BLOCKCHAIN',t:'Pro_Block_Bot',l:'subdomain',d:'PRO_BLOCKCHAIN → subdomain → Pro_Block_Bot'},
+  {f:'PRO_BLOCKCHAIN',t:'Bybit',l:'partner',d:'PRO_BLOCKCHAIN → partner → Bybit'},
+  {f:'PRO_BLOCKCHAIN',t:'BingX',l:'partner',d:'PRO_BLOCKCHAIN → partner → BingX'},
+  {f:'SLEZY_SATOSHI',t:'SleziSatoshi_TG',l:'subdomain',d:'SLEZY_SATOSHI → subdomain → SleziSatoshi_TG'},
+  {f:'SLEZY_SATOSHI',t:'Bitget',l:'partner',d:'SLEZY_SATOSHI → partner → Bitget'},
+  {f:'RDeni',t:'crypto_rostik_TG',l:'subdomain',d:'RDeni → subdomain → crypto_rostik_TG'},
+  {f:'RDeni',t:'WhiteBIT',l:'partner',d:'RDeni → partner → WhiteBIT'},
+  {f:'Crypto_Falcon',t:'Bybit',l:'partner',d:'Crypto_Falcon → partner → Bybit'},
+  {f:'Дневник_активов',t:'Bybit',l:'partner',d:'Дневник_активов → partner → Bybit'},
+  {f:'Дневник_активов',t:'Binance',l:'partner',d:'Дневник_активов → partner → Binance'},
+  {f:'Cryptology_Education',t:'OKX',l:'partner',d:'Cryptology_Education → partner → OKX'},
+  {f:'Prometheus_Bitcoin',t:'Binance',l:'partner',d:'Prometheus_Bitcoin → partner → Binance'},
+  {f:'DOUBLETOP',t:'Binance',l:'partner',d:'DOUBLETOP → partner → Binance'},
+  {f:'CryptoFateev',t:'Binance',l:'partner',d:'CryptoFateev → partner → Binance'},
+  {f:'CryptoInside',t:'Binance',l:'partner',d:'CryptoInside → partner → Binance'},
+  {f:'Binance',t:'Coinbase',l:'mentioned_in',d:'Binance → mentioned_in → Coinbase'},
+  {f:'Bitcoin',t:'Binance',l:'mentioned_in',d:'Bitcoin → mentioned_in → Binance'},
+  {f:'Ethereum',t:'Binance',l:'mentioned_in',d:'Ethereum → mentioned_in → Binance'},
+  {f:'Base',t:'Binance',l:'mentioned_in',d:'Base → mentioned_in → Binance'},
+  {f:'Ton',t:'Binance',l:'mentioned_in',d:'Ton → mentioned_in → Binance'},
+  {f:'Sui',t:'Binance',l:'mentioned_in',d:'Sui → mentioned_in → Binance'},
+  {f:'Solana',t:'Binance',l:'mentioned_in',d:'Solana → mentioned_in → Binance'},
+  {f:'Cz',t:'Binance',l:'mentioned_in',d:'Cz → mentioned_in → Binance'},
+  {f:'Bitcoin',t:'Bybit',l:'mentioned_in',d:'Bitcoin → mentioned_in → Bybit'},
+  {f:'Ethereum',t:'Bybit',l:'mentioned_in',d:'Ethereum → mentioned_in → Bybit'},
+  {f:'Ton',t:'Bybit',l:'mentioned_in',d:'Ton → mentioned_in → Bybit'},
+  {f:'Near',t:'Bybit',l:'mentioned_in',d:'Near → mentioned_in → Bybit'},
+  {f:'Kraken',t:'Bybit',l:'mentioned_in',d:'Kraken → mentioned_in → Bybit'}
+];
+// === LEVEL MAP for pyramid (0=top → 3=bottom) ===
+var LEVEL={exchange:0, tool:1, project:1, media:2, person:2, organization:2, other:2, blockchain:3};
 
-  // Headliners -> partners
-  {f:'headliners',t:'hashhedge',l:'partner',d:'Headliners развивает HashHedge как партнёрский проект.'},
-  {f:'headliners',t:'utex',l:'partner',d:'Headliners — партнёр UTEX.'},
+// Layer labels
+var LAYER_NAMES=['Биржи','Инструменты','Конкуренты/Каналы','Смыслы'];
 
-  // Headliners -> competitors
-  {f:'headliners',t:'kirillevans',l:'competitor',d:'Конкурирует в нише крипто-образования.'},
-  {f:'headliners',t:'romantomera',l:'competitor',d:'Конкурирует в нише крипто-подкастов.'},
-  {f:'headliners',t:'problockchain',l:'competitor',d:'Конкурирует в нише крипто-контента.'},
-  {f:'headliners',t:'slezysatoshi',l:'competitor',d:'Конкурирует в нише крипто-анализа.'},
-  {f:'headliners',t:'forklog',l:'competitor',d:'Конкурирует как крипто-медиа.'},
-  {f:'headliners',t:'cryptorblog',l:'competitor',d:'Конкурирует как крипто-контент.'},
-  {f:'headliners',t:'rdeni',l:'competitor',d:'Конкурирует в нише аналитики.'},
-  {f:'headliners',t:'mamkintrader',l:'competitor',d:'Конкурирует в обучающем контенте.'},
-  {f:'headliners',t:'cryptocapotg',l:'competitor',d:'Конкурирует как аналитический канал.'},
-  {f:'headliners',t:'cryptosignalsvip',l:'competitor',d:'Конкурирует в сигнальном контенте.'},
-  {f:'headliners',t:'wyckoff',l:'competitor',d:'Конкурирует как образовательный проект.'},
-  {f:'headliners',t:'cryptofalcon',l:'competitor',d:'Конкурирует в крипто-контенте.'},
-  {f:'headliners',t:'tomaskralov',l:'competitor',d:'Конкурирует в нише крипто-видео.'},
-  {f:'headliners',t:'cryptoscalp',l:'competitor',d:'Конкурирует в сигнальном контенте.'},
-  {f:'headliners',t:'bondarscalp',l:'competitor',d:'Конкурирует в скальпинг-контенте.'},
-  {f:'headliners',t:'proboyscalp',l:'competitor',d:'Конкурирует в скальпинг-сигналах.'},
-  {f:'headliners',t:'breidotrade',l:'competitor',d:'Конкурирует в сигнальном трейдинге.'},
-  {f:'headliners',t:'skalpingdigahka2',l:'competitor',d:'Конкурирует в скальпинг-контенте.'},
-  {f:'headliners',t:'taiptrade',l:'competitor',d:'Конкурирует в торговых сигналах.'},
-  {f:'headliners',t:'dnevnik',l:'competitor',d:'Конкурирует в контенте про активы.'},
-  {f:'headliners',t:'sercryptoch',l:'competitor',d:'Конкурирует как крипто-канал.'},
-  {f:'headliners',t:'cryptologyedu',l:'competitor',d:'Конкурирует в образовании.'},
-  {f:'headliners',t:'prometheusbtc',l:'competitor',d:'Конкурирует в крипто-анализе.'},
-  {f:'headliners',t:'cryptusmedia',l:'competitor',d:'Конкурирует как крипто-медиа.'},
-  {f:'headliners',t:'doubletop',l:'competitor',d:'Конкурирует как крипто-канал.'},
-  {f:'headliners',t:'cryptofateev',l:'competitor',d:'Конкурирует как аналитический канал.'},
-  {f:'headliners',t:'cryptoinside',l:'competitor',d:'Конкурирует как крипто-канал.'},
-  {f:'headliners',t:'altcoinsignals',l:'competitor',d:'Конкурирует в сигналах.'},
-  {f:'headliners',t:'cryptosignalhub',l:'competitor',d:'Конкурирует в хабе сигналов.'},
-  {f:'headliners',t:'tradersignalsru',l:'competitor',d:'Конкурирует в сигналах RU.'},
-  {f:'headliners',t:'drazor',l:'competitor',d:'Конкурирует как крипто-канал.'},
-  {f:'headliners',t:'gerchik',l:'competitor',d:'Конкурирует как экосистема.'},
-  {f:'headliners',t:'instarding',l:'competitor',d:'Конкурирует как крипто-канал.'},
-  {f:'headliners',t:'peersynth',l:'competitor',d:'Конкурирует как трейдинг-канал.'},
-  {f:'headliners',t:'vokari',l:'competitor',d:'Конкурирует как крипто-канал.'},
-  {f:'headliners',t:'birzhevik',l:'competitor',d:'Конкурирует как канал про биржу.'},
-  {f:'headliners',t:'ilyakorovin',l:'competitor',d:'Конкурирует как крипто-блогер.'},
-  {f:'headliners',t:'memestraders',l:'competitor',d:'Конкурирует в мем-контенте.'},
-  {f:'headliners',t:'signalsmoex',l:'competitor',d:'Конкурирует в сигналах ММВБ.'},
-  {f:'headliners',t:'centrproryva',l:'competitor',d:'Конкурирует как крипто-канал.'},
-  {f:'headliners',t:'shkolaerina',l:'competitor',d:'Конкурирует в образовании.'},
-  {f:'headliners',t:'taip',l:'competitor',d:'Конкурирует как сервис ТАЙП.'},
-  {f:'headliners',t:'bondarcscalp',l:'competitor',d:'Конкурирует в скальпинге.'},
-  {f:'headliners',t:'cryptosignals',l:'competitor',d:'Конкурирует в сигналах.'},
-  {f:'headliners',t:'cryptology',l:'competitor',d:'Конкурирует как крипто-проект.'},
-  {f:'headliners',t:'proboy',l:'competitor',d:'Конкурирует как сервис ProBoy.'},
-  {f:'headliners',t:'prometheuscrypto',l:'competitor',d:'Конкурирует как крипто-канал.'},
-  {f:'headliners',t:'sercrypto',l:'competitor',d:'Конкурирует как крипто-канал.'},
-  {f:'headliners',t:'skalpingdigahka',l:'competitor',d:'Конкурирует в скальпинге.'},
-  {f:'headliners',t:'headlinersru',l:'competitor',d:'Бренд Headliners в русскоязычном сегменте.'},
-  {f:'headliners',t:'chatcrypto',l:'competitor',d:'Конкурирует как чат трейдеров.'},
-
-  // Founder
-  {f:'nikitaanufriev',t:'headliners',l:'founder',d:'Никита Ануфриев — основатель Headliners.'},
-  {f:'nikitaanufriev',t:'hashhedge',l:'founder',d:'Никита Ануфриев — основатель HashHedge.'}
+// Meanins at the bottom (relationship type explanations)
+var MEANINGS=[
+  {id:'_meaning_partner', l:'🤝 Партнёрство', g:'meaning'},
+  {id:'_meaning_competitor', l:'⚔️ Конкуренция', g:'meaning'},
+  {id:'_meaning_founder', l:'👑 Основатель', g:'meaning'},
+  {id:'_meaning_subdomain', l:'🔗 Субдомен/Ресурс', g:'meaning'},
+  {id:'_meaning_mention', l:'📢 Упоминание', g:'meaning'},
+  {id:'_meaning_account', l:'📋 Аккаунт', g:'meaning'}
 ];
 
-// Build relation map
-var nmap={};
-NN.forEach(function(n){nmap[n.id]=n.l.replace('\n',' ');});
-var relMap={};
-EE.forEach(function(e){
-  if(!relMap[e.f])relMap[e.f]=[];
-  relMap[e.f].push({d:'out',to:e.t,l:e.l,ds:e.d});
-  if(!relMap[e.t])relMap[e.t]=[];
-  relMap[e.t].push({d:'in',from:e.f,l:e.l,ds:e.d});
-});
-
-// === GRAPH ===
-var net=null;
-
+// Build the graph
 function initGraph(){
-  var nodes=new vis.DataSet(NN.map(function(n){
-    return{id:n.id,label:n.l,group:n.g,
-      color:{background:C[n.g]||'#888',border:'#fff',
-        highlight:{background:'#fff',border:C[n.g]||'#888'}},
-      font:{color:'#e0e0e0',strokeWidth:2,strokeColor:'#0f0f1a',size:10,multi:true},
-      borderWidth:1,
-      size:n.g==='competitor'?18:(n.g==='tool'?16:22),
-      shape:n.g==='exchange'?'box':(n.g==='tool'?'ellipse':'ellipse'),
-      mass:n.g==='exchange'?4:(n.g==='competitor'?1.5:2)};
+  var allNodes=NN.slice();
+  
+  // Add meaning nodes at the bottom
+  MEANINGS.forEach(function(m){allNodes.push(m);});
+  
+  // Map groups to pyramid levels
+  var nodeLevels={};
+  allNodes.forEach(function(n){
+    if(n.g==='meaning') nodeLevels[n.id]=3;
+    else nodeLevels[n.id]=LEVEL[n.g]!==undefined?LEVEL[n.g]:2;
+  });
+  
+  // Create vis nodes with pyramid positioning
+  var nodes=new vis.DataSet(allNodes.map(function(n){
+    var ec=n.g==='meaning'?'#444466':(C[n.g]||'#888');
+    var lvl=nodeLevels[n.id]||0;
+    // shape
+    var shp='dot';
+    if(n.g==='exchange') shp='box';
+    if(n.g==='meaning') shp='box';
+    // size
+    var sz=n.sz||16;
+    var mass=n.m||1;
+    if(n.g==='meaning'){sz=14; mass=0;}
+    
+    return{id:n.id,label:n.l,group:n.g,level:lvl,
+      color:{background:ec,border:'#fff',
+        highlight:{background:'#ffff88',border:ec},
+        hover:{background:'#ffff88',border:ec}},
+      font:{color:'#fff',strokeWidth:2,strokeColor:'#000',size:Math.min(sz*0.37,12),multi:true,bold:true},
+      borderWidth:2,borderWidthSelected:4,
+      size:sz,shape:shp,mass:mass,fixed:false};
   }));
+  
   var edges=new vis.DataSet(EE.map(function(e,i){
-    return{id:i,from:e.f,to:e.t,label:e.l,
-      title:'Relation:\n'+e.l+'\n'+e.d,
-      color:{color:'#555',highlight:'#00d4aa',hover:'#00d4aa'},
-      width:1.2,font:{size:8,color:'#888',strokeWidth:2,strokeColor:'#0f0f1a',align:'middle'},
+    return{id:i,from:e.f,to:e.t,label:e.l,title:e.d,
+      color:{color:edgeColor[e.l]||'#555',highlight:'#fff',hover:'#fff'},
+      width:1.5,font:{size:8,color:edgeColor[e.l]||'#888',strokeWidth:2,strokeColor:'#0f0f1a',align:'middle'},
       smooth:{type:'curvedCW',roundness:0.1},
       arrows:{to:{enabled:true,scaleFactor:0.5}}};
   }));
+  
+  // Hierarchical pyramid layout
   net=new vis.Network(document.getElementById('graph-canvas'),{nodes:nodes,edges:edges},{
-    physics:{solver:'forceAtlas2Based',
-      forceAtlas2Based:{
-        gravitationalConstant:-60,centralGravity:0.005,
-        springLength:200,springConstant:0.015,damping:0.4},
-      stabilization:{iterations:200}},
-    layout:{improvedLayout:true},
-    interaction:{hover:true,tooltipDelay:300,keyboard:true},
+    layout:{
+      hierarchical:{
+        enabled:true,
+        direction:'UD',
+        sortMethod:'directed',
+        levelSeparation:180,
+        nodeSpacing:120,
+        treeSpacing:100,
+        edgeMinimization:true,
+        shakeTowards:'leaves'
+      }
+    },
+    physics:{enabled:false},
+    interaction:{hover:true,tooltipDelay:200,keyboard:true,zoomView:true,dragView:true},
     edges:{smooth:{type:'curvedCW'}},
   });
-  var ld=document.getElementById('loading');
-  if(ld)ld.style.display='none';
-  net.on('click',function(p){
-    if(p.nodes.length>0)showNode(p.nodes[0]);
+  
+  net.once('stabilizationIterationsDone',function(){
+    net.fit({animation:true,duration:300});
+    var hl=allNodes.find(function(n){return n.id==='Headliners';});
+    if(hl){net.selectNodes(['Headliners']);showNode('Headliners');}
   });
+  
+  net.on('click',function(p){
+    if(p.nodes.length>0){
+      var nid=p.nodes[0];
+      if(nid.startsWith('_meaning')) return; // skip meaning clicks
+      showNode(nid);
+    }else net.unselectAll();
+  });
+  net.on('hoverNode',function(p){document.body.style.cursor='pointer';});
+  net.on('blurNode',function(p){document.body.style.cursor='default';});
 }
 
 function zoomIn(){if(net)net.moveScale(1.3);}
 function zoomOut(){if(net)net.moveScale(0.7);}
-function zoomFit(){if(net)net.fit();}
-function resetView(){if(net){net.fit();net.moveTo({scale:1});}}
+function zoomFit(){if(net)net.fit({animation:true});}
 
 function showNode(id){
   var n=NN.find(function(x){return x.id===id;});
   if(!n)return;
-  var lbl=n.l.replace('\n',' '),g=n.g,de=n.d;
+  var lvl=LEVEL[n.g]!==undefined?LEVEL[n.g]:2;
+  var layer=LAYER_NAMES[lvl]||'Другое';
+  var lbl=n.l.replace(/\n/g,' ');
+  
   var h='<h3>'+lbl+'</h3>';
-  h+='<div class="df"><div class="lbl">Type</div><div class="val">'+
-    ({exchange:'Биржа',tool:'Инструмент',competitor:'Конкурент/Участник'}[g]||g)+'</div></div>';
-  h+='<div class="df"><div class="lbl">Description</div><div class="val">'+de+'</div></div>';
+  h+='<div class="df"><div class="lbl">Пирамида</div><div class="val">'+layer+'</div></div>';
+  h+='<div class="df"><div class="lbl">Тип</div><div class="val">'+n.g+'</div></div>';
   document.getElementById('tab-entity').innerHTML=h;
-
-  var rels=relMap[id]||[];
+  
+  // Relations
   var rh='<h3>Связи: '+lbl+'</h3>';
+  var rels=[];
+  EE.forEach(function(e){
+    if(e.f===id)rels.push({dir:'→',name:EE.name||e.l,tgt:e.t,desc:e.d});
+    if(e.t===id)rels.push({dir:'←',name:EE.name||e.l,tgt:e.f,desc:e.d});
+  });
   if(rels.length===0)rh+='<div class="empty-state">Нет связей</div>';
   else rels.forEach(function(r){
-    var tgt=r.d==='out'?nmap[r.to]:nmap[r.from];
-    var sym=r.d==='out'?'→':'←';
-    var lblType={'partner':'Партнёр','competitor':'Конкурент','founder':'Основатель'}[r.l]||r.l;
-    rh+='<div class="rc"><div class="target">'+sym+' '+tgt+'</div>';
-    rh+='<div class="desc"><b>'+lblType+'</b>: '+r.ds+'</div></div>';
+    var nm=NN.find(function(x){return x.id===r.tgt;});
+    var lbl2=nm?nm.l.replace(/\n/g,' '):r.tgt;
+    rh+='<div class="rc"><div class="target">'+r.dir+' '+lbl2+'</div>';
+    rh+='<div class="desc">'+r.desc+'</div></div>';
   });
   document.getElementById('tab-relations').innerHTML=rh;
   switchTab('entity');
 }
 
 function switchTab(t){
-  var tabs=['entity','relations'];
-  document.querySelectorAll('.tabs button').forEach(function(b,i){
-    b.classList.toggle('active',tabs[i]===t);
-  });
-  tabs.forEach(function(tab){
+  ['entity','relations'].forEach(function(tab){
     var el=document.getElementById('tab-'+tab);
     if(el)el.classList.toggle('active',tab===t);
+    document.querySelectorAll('.tabs button').forEach(function(b){
+      b.classList.toggle('active',b.textContent.trim()==={entity:'Сущность',relations:'Связи'}[t]);
+    });
   });
 }
 
-// Init on load
-setTimeout(initGraph,300);
+// Start
+initGraph();
 </script>
 </body>
 </html>
