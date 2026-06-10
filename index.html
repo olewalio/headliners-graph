@@ -78,8 +78,8 @@ var EE=[{f:'Binance',t:'CoinW',l:'partner'},{f:'Binance',t:'CryptoFateev',l:'par
 // === GRAPH ===
 var C={exchange:'#f87171',tool:'#ffd93d',media:'#c084fc',other:'#667799',person:'#c084fc',organization:'#f87171'};
 var edgeColor={partner:'#ffd93d',founder:'#00d4aa',subdomain:'#667799',mention:'#667799',account:'#667799',employee:'#667799'};
-var LEVEL={exchange:0,organization:0,media:1,person:1,meaning:2,other:3,tool:4};
-var LAYER_NAMES=['Биржи','Каналы','Смыслы','Инфраструктура','Инструменты'];
+var LEVEL={media:0,person:0,meaning:1,other:2,exchange:3,tool:3,organization:3};
+var LAYER_NAMES=['Каналы, сообщества','Смыслы, позиционирование','Инфраструктура','Инструменты, биржи, обучение'];
 var net;
 
 function initGraph(){
@@ -87,7 +87,7 @@ function initGraph(){
   NN.forEach(function(n){
     var lvl=LEVEL[n.g]||2;var arr=levelNodes[lvl]||(levelNodes[lvl]=[]);arr.push(n);
   });
-  var YPOS=[40,180,320,460,600];
+  var YPOS=[40,200,370,550];
   var nodes=new vis.DataSet(NN.map(function(n){
     var lvl=LEVEL[n.g]||2;
     var arr=levelNodes[lvl];
