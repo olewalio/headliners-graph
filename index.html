@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
+<!DOCTYPE html><html lang="ru"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Хедлайнеры — граф связей</title>
 <script src="https://unpkg.com/vis-data@7.1.4/standalone/umd/vis-data.min.js"></script>
@@ -39,12 +37,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .rc .desc{color:#ccc;font-size:11px;margin:2px 0}
 .empty-state{color:#555;font-size:11px;text-align:center;padding:20px}
 @media(max-width:768px){#main{flex-direction:column}#sidebar{width:100%;height:35vh}}
-</style>
-</head>
-<body>
+</style></head><body>
 <div id="header">
   <h2>🏛 Хедлайнеры — Граф связей</h2>
-  <div class="sub">8 бирж · 41 сущностей · 45 связей</div>
+  <div class="sub"></div>
   <div class="badge">Кликни на узле → детали</div>
 </div>
 <div id="main">
@@ -60,219 +56,78 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
   <div class="row"><span class="dot" style="background:#f87171"></span> Биржи (центр)</div>
   <div class="row"><span class="dot" style="background:#d1d5db"></span> Инструменты</div>
   <div class="row"><span class="dot" style="background:#c084fc"></span> Каналы</div>
-  <div class="row"><span class="dot" style="background:#667799"></span> Субдомены/Прочее</div>
   <div class="divider"></div>
   <div class="title">🔗 Связи</div>
   <div class="row"><span class="line" style="background:#ffd93d"></span> Партнёр</div>
-  <div class="row"><span class="line" style="background:#ff6b6b"></span> Конкурент</div>
   <div class="row"><span class="line" style="background:#00d4aa"></span> Основатель</div>
-  <div class="row"><span class="line" style="background:#667799"></span> Субдомен/Упоминание</div>
+  <div class="row"><span class="line" style="background:#667799"></span> Субдомен/Ресурс</div>
 </div>
 </div>
 <div id="sidebar">
   <div class="tabs"><button class="active" onclick="switchTab('entity')">Сущность</button><button onclick="switchTab('relations')">Связи</button></div>
   <div class="tab-content active" id="tab-entity"><div class="empty-state">Кликни на узел</div></div>
   <div class="tab-content" id="tab-relations"><div class="empty-state">Кликни на узел</div></div>
-</div>
-</div>
+</div></div>
 <script>
 // === DATA ===
-var edgeColor={partner:'#ffd93d',competitor:'#ff6b6b',founder:'#00d4aa',subdomain:'#667799',mention:'#556677',account:'#667799',employee:'#667799'};
-var C={exchange:'#f87171',tool:'#d1d5db',competitor:'#c084fc',project:'#888',other:'#667799',blockchain:'#667799',person:'#667799',organization:'#667799',media:'#c084fc'};
+var NN=[{id:'Binance',l:'Binance',g:'exchange',sz:32,m:15},{id:'BingX',l:'BingX',g:'exchange',sz:32,m:15},{id:'Bitget',l:'Bitget',g:'exchange',sz:32,m:15},{id:'Bybit',l:'Bybit',g:'exchange',sz:32,m:15},{id:'WhiteBIT',l:'WhiteBIT',g:'exchange',sz:32,m:15},{id:'OKX',l:'OKX',g:'exchange',sz:32,m:15},{id:'UTEX',l:'UTEX',g:'exchange',sz:32,m:15},{id:'HashHedge',l:'HashHedge',g:'tool',sz:22,m:4},{id:'Headliners',l:'Headliners',g:'media',sz:36,m:5},{id:'CoinW',l:'CoinW',g:'media',sz:28,m:2.5},{id:'Kirill_Evans',l:'Kirill Evans',g:'media',sz:34,m:2.5},{id:'Roman_Tomera',l:'Roman Tomera',g:'media',sz:34,m:2.5},{id:'PRO_BLOCKCHAIN',l:'PRO BLOCKCHAIN',g:'media',sz:34,m:2.5},{id:'ForkLog',l:'ForkLog',g:'media',sz:34,m:2.5},{id:'DOUBLETOP',l:'DOUBLETOP',g:'media',sz:34,m:2.5},{id:'SLEZY_SATOSHI',l:'SLEZY SATOSHI',g:'media',sz:26,m:1.8},{id:'RDeni',l:'RDeni',g:'media',sz:26,m:1.8},{id:'CryptoFateev',l:'CryptoFateev',g:'media',sz:26,m:1.8},{id:'CryptoInside',l:'CryptoInside',g:'media',sz:26,m:1.8},{id:'Crypto_Falcon',l:'Crypto Falcon',g:'media',sz:26,m:1.8},{id:'Cryptology_Education',l:'Cryptology Education',g:'media',sz:26,m:1.8},{id:'Prometheus_Bitcoin',l:'Prometheus Bitcoin',g:'media',sz:26,m:1.8},{id:'Дневник_активов',l:'Дневник активов',g:'media',sz:26,m:1.8},{id:'Nikita_Anufriev',l:'Никита Ануфриев',g:'person',sz:28,m:2.5},{id:'CoinW_Telegram',l:'CoinW Telegram',g:'other',sz:14,m:0.7},{id:'Evans_Crypto_TG',l:'Evans Crypto TG',g:'other',sz:14,m:0.7},{id:'CrypTomera_TG',l:'CrypTomera TG',g:'other',sz:14,m:0.7},{id:'crypto_rostik_TG',l:'crypto_rostik TG',g:'other',sz:14,m:0.7},{id:'SleziSatoshi_TG',l:'SleziSatoshi TG',g:'other',sz:14,m:0.7},{id:'Pro_Block_Bot',l:'Pro_Block_Bot',g:'other',sz:14,m:0.7},{id:'XXXHunters_bot',l:'XXXHunters_bot',g:'other',sz:14,m:0.7},{id:'nainspire_TG',l:'nainspire TG',g:'other',sz:14,m:0.7},{id:'headIinersadmin',l:'headIinersadmin',g:'other',sz:14,m:0.7},{id:'headlinerslinks_com',l:'headlinerslinks.com',g:'other',sz:14,m:0.7},{id:'headliners_traders_bot',l:'headliners_traders_bot',g:'other',sz:14,m:0.7},{id:'Headliners_YouTube_Main',l:'Headliners YouTube Main',g:'other',sz:16,m:1},{id:'Headliners_TradeLab',l:'Headliners TradeLab',g:'other',sz:16,m:1},{id:'Headliners_Crypto_TG',l:'Headliners Crypto TG',g:'other',sz:16,m:1},{id:'HashHedge_TG',l:'HashHedge',g:'tool',sz:22,m:4},{id:'MicronCryptoBot',l:'MicronCryptoBot',g:'other',sz:14,m:0.7},{id:'kirillevans_com',l:'kirillevans.com',g:'other',sz:14,m:0.7},{id:'cryptocommunity_ai',l:'cryptocommunity.ai',g:'other',sz:14,m:0.7},{id:'dust_link',l:'dust.link',g:'other',sz:14,m:0.7},{id:'Wyckoff_Company',l:'Wyckoff Company',g:'media',sz:26,m:1.8}];
+var EE=[{f:'Binance',t:'CoinW',l:'partner'},{f:'Binance',t:'CryptoFateev',l:'partner'},{f:'Binance',t:'CryptoInside',l:'partner'},{f:'Binance',t:'DOUBLETOP',l:'partner'},{f:'Binance',t:'Kirill_Evans',l:'partner'},{f:'Binance',t:'Prometheus_Bitcoin',l:'partner'},{f:'Binance',t:'Roman_Tomera',l:'partner'},{f:'Binance',t:'Дневник_активов',l:'partner'},{f:'BingX',t:'PRO_BLOCKCHAIN',l:'partner'},{f:'Bitget',t:'SLEZY_SATOSHI',l:'partner'},{f:'Bybit',t:'Crypto_Falcon',l:'partner'},{f:'Bybit',t:'PRO_BLOCKCHAIN',l:'partner'},{f:'Bybit',t:'Roman_Tomera',l:'partner'},{f:'Bybit',t:'Дневник_активов',l:'partner'},{f:'CoinW',t:'CoinW_Telegram',l:'account'},{f:'Headliners',t:'CoinW',l:'partner'},{f:'Headliners',t:'UTEX',l:'partner'},{f:'Headliners',t:'HashHedge',l:'partner'},{f:'Headliners',t:'headlinerslinks_com',l:'subdomain'},{f:'Headliners',t:'headliners_traders_bot',l:'subdomain'},{f:'Headliners_Crypto_TG',t:'Headliners',l:'subdomain'},{f:'Headliners_Crypto_TG',t:'headliners_traders_bot',l:'subdomain'},{f:'Headliners_Crypto_TG',t:'HashHedge',l:'partner'},{f:'Headliners_Crypto_TG',t:'headIinersadmin',l:'employee'},{f:'Headliners_Crypto_TG',t:'nainspire_TG',l:'mention'},{f:'Headliners_TradeLab',t:'Headliners',l:'subdomain'},{f:'Headliners_TradeLab',t:'Headliners_YouTube_Main',l:'mention'},{f:'Headliners_YouTube_Main',t:'Headliners',l:'subdomain'},{f:'Headliners_YouTube_Main',t:'Nikita_Anufriev',l:'founder'},{f:'Kirill_Evans',t:'Binance',l:'partner'},{f:'Kirill_Evans',t:'Evans_Crypto_TG',l:'subdomain'},{f:'Kirill_Evans',t:'MicronCryptoBot',l:'subdomain'},{f:'Kirill_Evans',t:'cryptocommunity_ai',l:'subdomain'},{f:'Kirill_Evans',t:'dust_link',l:'subdomain'},{f:'Kirill_Evans',t:'kirillevans_com',l:'subdomain'},{f:'Nikita_Anufriev',t:'Headliners',l:'founder'},{f:'Nikita_Anufriev',t:'HashHedge',l:'partner'},{f:'OKX',t:'Roman_Tomera',l:'partner'},{f:'OKX',t:'Cryptology_Education',l:'partner'},{f:'PRO_BLOCKCHAIN',t:'Bybit',l:'partner'},{f:'PRO_BLOCKCHAIN',t:'BingX',l:'partner'},{f:'PRO_BLOCKCHAIN',t:'Pro_Block_Bot',l:'subdomain'},{f:'PRO_BLOCKCHAIN',t:'XXXHunters_bot',l:'subdomain'},{f:'Roman_Tomera',t:'Binance',l:'partner'},{f:'Roman_Tomera',t:'Bybit',l:'partner'},{f:'Roman_Tomera',t:'OKX',l:'partner'},{f:'Roman_Tomera',t:'CrypTomera_TG',l:'subdomain'},{f:'RDeni',t:'WhiteBIT',l:'partner'},{f:'RDeni',t:'crypto_rostik_TG',l:'subdomain'},{f:'SLEZY_SATOSHI',t:'Bitget',l:'partner'},{f:'SLEZY_SATOSHI',t:'SleziSatoshi_TG',l:'subdomain'},{f:'WhiteBIT',t:'RDeni',l:'partner'},{f:'Wyckoff_Company',t:'Headliners',l:'partner'},{f:'Дневник_активов',t:'Binance',l:'partner'},{f:'Дневник_активов',t:'Bybit',l:'partner'}];
 
-// AUTO-GENERATED from headliners_mermaid_ru.txt
+// === GRAPH ===
+var C={exchange:'#f87171',tool:'#d1d5db',media:'#c084fc',other:'#667799',person:'#c084fc'};
+var edgeColor={partner:'#ffd93d',founder:'#00d4aa',subdomain:'#667799',mention:'#667799',account:'#667799',employee:'#667799'};
+var LEVEL={exchange:0,tool:1,media:2,person:2,other:2};
+var LAYER_NAMES=['Биржи','Инструменты','Каналы'];
+var net;
 
-var edgeColor={"partner": "#ffd93d", "competitor": "#ff6b6b", "founder": "#00d4aa", "subdomain": "#667799", "mention": "#556677", "account": "#667799", "employee": "#888899"};
-var NN=[
-  {id:'Binance',l:'Binance',g:'exchange',sz:32,m:15},
-  {id:'BingX',l:'BingX',g:'exchange',sz:32,m:15},
-  {id:'Bitget',l:'Bitget',g:'exchange',sz:32,m:15},
-  {id:'Bybit',l:'Bybit',g:'exchange',sz:32,m:15},
-  {id:'CoinW',l:'CoinW',g:'organization',sz:14,m:0.7},
-  {id:'CoinW_Telegram',l:'CoinW Telegram',g:'other',sz:14,m:0.7},
-  {id:'CrypTomera_TG',l:'CrypTomera TG',g:'other',sz:14,m:0.7},
-  {id:'CryptoFateev',l:'CryptoFateev',g:'media',sz:26,m:1.8},
-  {id:'CryptoInside',l:'CryptoInside',g:'media',sz:26,m:1.8},
-  {id:'Crypto_Falcon',l:'Crypto Falcon',g:'media',sz:26,m:1.8},
-  {id:'Cryptology_Education',l:'Cryptology Education',g:'media',sz:26,m:1.8},
-  {id:'DOUBLETOP',l:'DOUBLETOP',g:'media',sz:34,m:2.5},
-  {id:'Evans_Crypto_TG',l:'Evans Crypto TG',g:'other',sz:14,m:0.7},
-  {id:'HashHedge',l:'HashHedge',g:'project',sz:22,m:4},
-  {id:'Headliners',l:'Headliners',g:'media',sz:36,m:4},
-  {id:'Headliners_Crypto_TG',l:'Headliners Crypto TG',g:'other',sz:14,m:0.7},
-  {id:'Headliners_TradeLab',l:'Headliners TradeLab',g:'other',sz:14,m:0.7},
-  {id:'Headliners_YouTube_Main',l:'Headliners YouTube Main',g:'other',sz:14,m:0.7},
-  {id:'Kirill_Evans',l:'Kirill Evans',g:'media',sz:34,m:2.5},
-  {id:'MicronCryptoBot',l:'MicronCryptoBot',g:'other',sz:14,m:0.7},
-  {id:'Nikita_Anufriev',l:'Nikita Anufriev',g:'person',sz:26,m:1.8},
-  {id:'OKX',l:'OKX',g:'exchange',sz:32,m:15},
-  {id:'PRO_BLOCKCHAIN',l:'PRO BLOCKCHAIN',g:'media',sz:34,m:2.5},
-  {id:'Pro_Block_Bot',l:'Pro_Block_Bot',g:'other',sz:14,m:0.7},
-  {id:'Prometheus_Bitcoin',l:'Prometheus Bitcoin',g:'media',sz:26,m:1.8},
-  {id:'RDeni',l:'RDeni',g:'media',sz:26,m:1.8},
-  {id:'Roman_Tomera',l:'Roman Tomera',g:'media',sz:34,m:2.5},
-  {id:'SLEZY_SATOSHI',l:'SLEZY SATOSHI',g:'media',sz:26,m:1.8},
-  {id:'SleziSatoshi_TG',l:'SleziSatoshi TG',g:'other',sz:14,m:0.7},
-  {id:'UTEX',l:'UTEX',g:'exchange',sz:32,m:15},
-  {id:'WhiteBIT',l:'WhiteBIT',g:'exchange',sz:32,m:15},
-  {id:'XXXHunters_bot',l:'XXXHunters_bot',g:'other',sz:14,m:0.7},
-  {id:'crypto_rostik_TG',l:'crypto_rostik TG',g:'other',sz:14,m:0.7},
-  {id:'cryptocommunity_ai',l:'cryptocommunity.ai',g:'other',sz:14,m:0.7},
-  {id:'dust_link',l:'dust.link',g:'other',sz:14,m:0.7},
-  {id:'headIinersadmin',l:'headIinersadmin',g:'other',sz:14,m:0.7},
-  {id:'headliners_traders_bot',l:'headliners_traders_bot',g:'other',sz:14,m:0.7},
-  {id:'headlinerslinks_com',l:'headlinerslinks.com',g:'other',sz:14,m:0.7},
-  {id:'kirillevans_com',l:'kirillevans.com',g:'other',sz:14,m:0.7},
-  {id:'nainspire_TG',l:'nainspire TG',g:'other',sz:14,m:0.7},
-  {id:'Дневник_активов',l:'Дневник активов',g:'media',sz:18,m:1.2}
-];
-var EE=[
-  {f:'Headliners',t:'headlinerslinks_com',l:'subdomain',d:'Headliners → subdomain → headlinerslinks_com'},
-  {f:'Headliners',t:'headliners_traders_bot',l:'subdomain',d:'Headliners → subdomain → headliners_traders_bot'},
-  {f:'Nikita_Anufriev',t:'Headliners',l:'founder',d:'Nikita_Anufriev → founder → Headliners'},
-  {f:'Headliners_YouTube_Main',t:'Headliners',l:'subdomain',d:'Headliners_YouTube_Main → subdomain → Headliners'},
-  {f:'Headliners_TradeLab',t:'Headliners',l:'subdomain',d:'Headliners_TradeLab → subdomain → Headliners'},
-  {f:'nainspire_TG',t:'Headliners',l:'subdomain',d:'nainspire_TG → subdomain → Headliners'},
-  {f:'Headliners_Crypto_TG',t:'Headliners',l:'subdomain',d:'Headliners_Crypto_TG → subdomain → Headliners'},
-  {f:'Headliners',t:'HashHedge',l:'partner',d:'Headliners → partner → HashHedge'},
-  {f:'Kirill_Evans',t:'Headliners',l:'competitor',d:'Kirill_Evans → competitor → Headliners'},
-  {f:'Headliners',t:'CoinW',l:'partner',d:'Headliners → partner → CoinW'},
-  {f:'Headliners',t:'PRO_BLOCKCHAIN',l:'competitor',d:'Headliners → competitor → PRO_BLOCKCHAIN'},
-  {f:'Roman_Tomera',t:'Headliners',l:'competitor',d:'Roman_Tomera → competitor → Headliners'},
-  {f:'RDeni',t:'Headliners',l:'competitor',d:'RDeni → competitor → Headliners'},
-  {f:'Headliners',t:'Kirill_Evans',l:'competitor',d:'Headliners → competitor → Kirill_Evans'},
-  {f:'Headliners',t:'Roman_Tomera',l:'competitor',d:'Headliners → competitor → Roman_Tomera'},
-  {f:'Headliners',t:'ForkLog',l:'competitor',d:'Headliners → competitor → ForkLog'},
-  {f:'Headliners',t:'RDeni',l:'competitor',d:'Headliners → competitor → RDeni'},
-  {f:'Headliners',t:'Wyckoff_Company',l:'competitor',d:'Headliners → competitor → Wyckoff_Company'},
-  {f:'Headliners',t:'CryptoCapo_TG',l:'competitor',d:'Headliners → competitor → CryptoCapo_TG'},
-  {f:'Headliners',t:'Cryptology_Education',l:'competitor',d:'Headliners → competitor → Cryptology_Education'},
-  {f:'Headliners',t:'CRYPTUS_MEDIA',l:'competitor',d:'Headliners → competitor → CRYPTUS_MEDIA'},
-  {f:'PRO_BLOCKCHAIN',t:'Headliners',l:'competitor',d:'PRO_BLOCKCHAIN → competitor → Headliners'},
-  {f:'SLEZY_SATOSHI',t:'Headliners',l:'competitor',d:'SLEZY_SATOSHI → competitor → Headliners'},
-  {f:'Headliners',t:'Дневник_активов',l:'competitor',d:'Headliners → competitor → Дневник_активов'},
-  {f:'Headliners',t:'Prometheus_Bitcoin',l:'competitor',d:'Headliners → competitor → Prometheus_Bitcoin'},
-  {f:'Headliners',t:'UTEX',l:'partner',d:'Headvar EE=[
-  {f:'Headliners',t:'headlinerslinks_com',l:'subdomain',d:'Headliners → subdomain → headlinerslinks_com'},
-  {f:'Headliners',t:'headliners_traders_bot',l:'subdomain',d:'Headliners → subdomain → headliners_traders_bot'},
-  {f:'Nikita_Anufriev',t:'Headliners',l:'founder',d:'Nikita_Anufriev → founder → Headliners'},
-  {f:'Headliners_YouTube_Main',t:'Headliners',l:'subdomain',d:'Headliners_YouTube_Main → subdomain → Headliners'},
-  {f:'Headliners_TradeLab',t:'Headliners',l:'subdomain',d:'Headliners_TradeLab → subdomain → Headliners'},
-  {f:'nainspire_TG',t:'Headliners',l:'subdomain',d:'nainspire_TG → subdomain → Headliners'},
-  {f:'Headliners_Crypto_TG',t:'Headliners',l:'subdomain',d:'Headliners_Crypto_TG → subdomain → Headliners'},
-  {f:'Headliners',t:'HashHedge',l:'partner',d:'Headliners → partner → HashHedge'},
-  {f:'Headliners',t:'CoinW',l:'partner',d:'Headliners → partner → CoinW'},
-  {f:'Headliners',t:'UTEX',l:'partner',d:'Headliners → partner → UTEX'},
-  {f:'CoinW',t:'CoinW_Telegram',l:'has_account',d:'CoinW → has_account → CoinW_Telegram'},
-  {f:'Headliners_YouTube_Main',t:'Nikita_Anufriev',l:'founder',d:'Headliners_YouTube_Main → founder → Nikita_Anufriev'},
-  {f:'nainspire_TG',t:'Nikita_Anufriev',l:'subdomain',d:'nainspire_TG → subdomain → Nikita_Anufriev'},
-  {f:'Nikita_Anufriev',t:'HashHedge',l:'partner',d:'Nikita_Anufriev → partner → HashHedge'},
-  {f:'Headliners_TradeLab',t:'Headliners_YouTube_Main',l:'mentioned_in',d:'Headliners_TradeLab → mentioned_in → Headliners_YouTube_Main'},
-  {f:'Headliners_Crypto_TG',t:'nainspire_TG',l:'mentioned_in',d:'Headliners_Crypto_TG → mentioned_in → nainspire_TG'},
-  {f:'Headliners_Crypto_TG',t:'headIinersadmin',l:'employee',d:'Headliners_Crypto_TG → employee → headIinersadmin'},
-  {f:'Headliners_Crypto_TG',t:'headliners_traders_bot',l:'subdomain',d:'Headliners_Crypto_TG → subdomain → headliners_traders_bot'},
-  {f:'Headliners_Crypto_TG',t:'HashHedge',l:'partner',d:'Headliners_Crypto_TG → partner → HashHedge'},
-  {f:'Kirill_Evans',t:'Evans_Crypto_TG',l:'subdomain',d:'Kirill_Evans → subdomain → Evans_Crypto_TG'},
-  {f:'Kirill_Evans',t:'cryptocommunity_ai',l:'subdomain',d:'Kirill_Evans → subdomain → cryptocommunity_ai'},
-  {f:'Kirill_Evans',t:'kirillevans_com',l:'subdomain',d:'Kirill_Evans → subdomain → kirillevans_com'},
-  {f:'Kirill_Evans',t:'Binance',l:'partner',d:'Kirill_Evans → partner → Binance'},
-  {f:'Kirill_Evans',t:'dust_link',l:'subdomain',d:'Kirill_Evans → subdomain → dust_link'},
-  {f:'Kirill_Evans',t:'MicronCryptoBot',l:'subdomain',d:'Kirill_Evans → subdomain → MicronCryptoBot'},
-  {f:'Roman_Tomera',t:'CrypTomera_TG',l:'subdomain',d:'Roman_Tomera → subdomain → CrypTomera_TG'},
-  {f:'Roman_Tomera',t:'OKX',l:'partner',d:'Roman_Tomera → partner → OKX'},
-  {f:'Roman_Tomera',t:'Binance',l:'partner',d:'Roman_Tomera → partner → Binance'},
-  {f:'Roman_Tomera',t:'Bybit',l:'partner',d:'Roman_Tomera → partner → Bybit'},
-  {f:'PRO_BLOCKCHAIN',t:'XXXHunters_bot',l:'subdomain',d:'PRO_BLOCKCHAIN → subdomain → XXXHunters_bot'},
-  {f:'PRO_BLOCKCHAIN',t:'Pro_Block_Bot',l:'subdomain',d:'PRO_BLOCKCHAIN → subdomain → Pro_Block_Bot'},
-  {f:'PRO_BLOCKCHAIN',t:'Bybit',l:'partner',d:'PRO_BLOCKCHAIN → partner → Bybit'},
-  {f:'PRO_BLOCKCHAIN',t:'BingX',l:'partner',d:'PRO_BLOCKCHAIN → partner → BingX'},
-  {f:'SLEZY_SATOSHI',t:'SleziSatoshi_TG',l:'subdomain',d:'SLEZY_SATOSHI → subdomain → SleziSatoshi_TG'},
-  {f:'SLEZY_SATOSHI',t:'Bitget',l:'partner',d:'SLEZY_SATOSHI → partner → Bitget'},
-  {f:'RDeni',t:'crypto_rostik_TG',l:'subdomain',d:'RDeni → subdomain → crypto_rostik_TG'},
-  {f:'RDeni',t:'WhiteBIT',l:'partner',d:'RDeni → partner → WhiteBIT'},
-  {f:'Crypto_Falcon',t:'Bybit',l:'partner',d:'Crypto_Falcon → partner → Bybit'},
-  {f:'Дневник_активов',t:'Bybit',l:'partner',d:'Дневник_активов → partner → Bybit'},
-  {f:'Дневник_активов',t:'Binance',l:'partner',d:'Дневник_активов → partner → Binance'},
-  {f:'Cryptology_Education',t:'OKX',l:'partner',d:'Cryptology_Education → partner → OKX'},
-  {f:'Prometheus_Bitcoin',t:'Binance',l:'partner',d:'Prometheus_Bitcoin → partner → Binance'},
-  {f:'DOUBLETOP',t:'Binance',l:'partner',d:'DOUBLETOP → partner → Binance'},
-  {f:'CryptoFateev',t:'Binance',l:'partner',d:'CryptoFateev → partner → Binance'},
-  {f:'CryptoInside',t:'Binance',l:'partner',d:'CryptoInside → partner → Binance'}
-];80,
-        nodeSpacing:120,
-        treeSpacing:100,
-        edgeMinimization:true,
-        shakeTowards:'leaves'
-      }
-    },
-    physics:{enabled:false},
-    interaction:{hover:true,tooltipDelay:200,keyboard:true,zoomView:true,dragView:true},
+function initGraph(){
+  var nodes=new vis.DataSet(NN.map(function(n){
+    var lvl=LEVEL[n.g]||2;
+    return{id:n.id,label:n.l,group:n.g,level:lvl,
+      color:{background:C[n.g]||'#888',border:'#fff',highlight:{background:'#ffff88',border:C[n.g]||'#888'},hover:{background:'#ffff88',border:C[n.g]||'#888'}},
+      font:{color:'#fff',strokeWidth:2,strokeColor:'#000',size:Math.min(n.sz*0.37,12),multi:true,bold:true},
+      borderWidth:2,borderWidthSelected:4,size:n.sz,shape:n.g==='exchange'?'box':'dot',mass:n.m||1};
+  }));
+  var edges=new vis.DataSet(EE.map(function(e,i){
+    return{id:i,from:e.f,to:e.t,label:e.l,
+      color:{color:edgeColor[e.l]||'#555',highlight:'#fff',hover:'#fff'},
+      width:1.5,font:{size:8,color:edgeColor[e.l]||'#888',strokeWidth:2,strokeColor:'#0f0f1a',align:'middle'},
+      smooth:{type:'curvedCW',roundness:0.1},
+      arrows:{to:{enabled:true,scaleFactor:0.5}}};
+  }));
+  net=new vis.Network(document.getElementById('graph-canvas'),{nodes:nodes,edges:edges},{
+    layout:{hierarchical:{enabled:true,direction:'UD',sortMethod:'directed',levelSeparation:180,nodeSpacing:120,treeSpacing:100}},
+    physics:{enabled:false},interaction:{hover:true,tooltipDelay:200,keyboard:true,zoomView:true,dragView:true},
     edges:{smooth:{type:'curvedCW'}},
   });
-  
-  net.once('stabilizationIterationsDone',function(){
-    net.fit({animation:true,duration:300});
-    var hl=allNodes.find(function(n){return n.id==='Headliners';});
-    if(hl){net.selectNodes(['Headliners']);showNode('Headliners');}
-  });
-  
-  net.on('click',function(p){
-    if(p.nodes.length>0){
-      var nid=p.nodes[0];
-      if(nid.startsWith('_meaning')) return; // skip meaning clicks
-      showNode(nid);
-    }else net.unselectAll();
-  });
-  net.on('hoverNode',function(p){document.body.style.cursor='pointer';});
-  net.on('blurNode',function(p){document.body.style.cursor='default';});
+  document.querySelector('.sub').textContent='7 бирж · '+NN.length+' сущностей · '+EE.length+' связей';
+  net.once('stabilizationIterationsDone',function(){net.fit({animation:true,duration:300});});
+  net.on('click',function(p){if(p.nodes.length>0)showNode(p.nodes[0]);else net.unselectAll();});
+  net.on('hoverNode',function(){document.body.style.cursor='pointer';});
+  net.on('blurNode',function(){document.body.style.cursor='default';});
 }
-
 function zoomIn(){if(net)net.moveScale(1.3);}
 function zoomOut(){if(net)net.moveScale(0.7);}
 function zoomFit(){if(net)net.fit({animation:true});}
-
 function showNode(id){
-  var n=NN.find(function(x){return x.id===id;});
-  if(!n)return;
+  var n=NN.find(function(x){return x.id===id;});if(!n)return;
   var lvl=LEVEL[n.g]!==undefined?LEVEL[n.g]:2;
-  var layer=LAYER_NAMES[lvl]||'Другое';
   var lbl=n.l.replace(/\n/g,' ');
-  
-  var h='<h3>'+lbl+'</h3>';
-  h+='<div class="df"><div class="lbl">Пирамида</div><div class="val">'+layer+'</div></div>';
-  h+='<div class="df"><div class="lbl">Тип</div><div class="val">'+n.g+'</div></div>';
+  var h='<h3>'+lbl+'</h3><div class="df"><div class="lbl">Пирамида</div><div class="val">'+LAYER_NAMES[lvl]+'</div></div>';
   document.getElementById('tab-entity').innerHTML=h;
-  
-  // Relations
   var rh='<h3>Связи: '+lbl+'</h3>';
   var rels=[];
-  EE.forEach(function(e){
-    if(e.f===id)rels.push({dir:'→',name:EE.name||e.l,tgt:e.t,desc:e.d});
-    if(e.t===id)rels.push({dir:'←',name:EE.name||e.l,tgt:e.f,desc:e.d});
-  });
+  EE.forEach(function(e){if(e.f===id||e.t===id)rels.push(e);});
   if(rels.length===0)rh+='<div class="empty-state">Нет связей</div>';
   else rels.forEach(function(r){
-    var nm=NN.find(function(x){return x.id===r.tgt;});
-    var lbl2=nm?nm.l.replace(/\n/g,' '):r.tgt;
-    rh+='<div class="rc"><div class="target">'+r.dir+' '+lbl2+'</div>';
-    rh+='<div class="desc">'+r.desc+'</div></div>';
+    var tgt=r.f===id?r.t:r.f;var dir=r.f===id?'→':'←';
+    var nm=NN.find(function(x){return x.id===tgt;});
+    rh+='<div class="rc"><div class="target">'+dir+' '+(nm?nm.l.replace(/\n/g,' '):tgt)+'</div>';
+    rh+='<div class="desc">'+({partner:'Партнёр',founder:'Основатель',subdomain:'Субдомен',mention:'Упоминание',account:'Аккаунт',employee:'Сотрудник'}[r.l]||r.l)+'</div></div>';
   });
   document.getElementById('tab-relations').innerHTML=rh;
   switchTab('entity');
 }
-
-function switchTab(t){
-  ['entity','relations'].forEach(function(tab){
-    var el=document.getElementById('tab-'+tab);
-    if(el)el.classList.toggle('active',tab===t);
-    document.querySelectorAll('.tabs button').forEach(function(b){
-      b.classList.toggle('active',b.textContent.trim()==={entity:'Сущность',relations:'Связи'}[t]);
-    });
-  });
-}
-
-// Start
+function switchTab(t){['entity','relations'].forEach(function(tab){var el=document.getElementById('tab-'+tab);if(el)el.classList.toggle('active',tab===t);});document.querySelectorAll('.tabs button').forEach(function(b,i){b.classList.toggle('active',(i===0&&t==='entity')||(i===1&&t==='relations'));});}
 initGraph();
-</script>
-</body>
-</html>
+</script></body></html>
