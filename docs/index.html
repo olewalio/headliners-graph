@@ -98,7 +98,7 @@ function initGraph(){
     return{id:n.id,label:n.l,group:n.g,level:lvl,x:x,y:y,
       color:{background:C[n.g]||'#888',border:'#fff',highlight:{background:'#ffff88',border:C[n.g]||'#888'},hover:{background:'#ffff88',border:C[n.g]||'#888'}},
       font:{color:'#fff',strokeWidth:2,strokeColor:'#000',size:Math.min(n.sz*0.37,12),multi:true,bold:true},
-      borderWidth:2,borderWidthSelected:4,size:n.sz,shape:n.g==='exchange'?'box':'dot',mass:n.m||1};
+      borderWidth:2,borderWidthSelected:4,size:n.sz,shape:n.g==='exchange'?'box':'dot',mass:n.m||1,fixed:true};
   }));
   var edges=new vis.DataSet(EE.map(function(e,i){
     return{id:i,from:e.f,to:e.t,label:e.l,
@@ -114,7 +114,7 @@ function initGraph(){
     edges:{smooth:{type:'curvedCW'}},
   });
   document.querySelector('.sub').textContent='7 бирж · '+NN.length+' сущностей · '+EE.length+' связей';
-  net.once('stabilizationIterationsDone',function(){net.fit({animation:true,duration:300});});
+  net.once('stabilizationIterationsDone',function(){net.fit({animation:true,duration:300});});setTimeout(function(){net.fit({animation:false});},100);
   net.on('click',function(p){if(p.nodes.length>0)showNode(p.nodes[0]);else net.unselectAll();});
   net.on('hoverNode',function(){document.body.style.cursor='pointer';});
   net.on('blurNode',function(){document.body.style.cursor='default';});
