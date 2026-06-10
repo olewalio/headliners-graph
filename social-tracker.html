@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Social Tracker — Хедлайнеры</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0b0b12;color:#e0e0e0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+.header{background:#13131e;border-bottom:1px solid #2a2a40;padding:0.7rem 1.5rem;display:flex;justify-content:space-between;align-items:center}
+.header h1{font-size:1.1rem;color:#00d4aa}
+.header .sub{font-size:0.78rem;color:#9494aa}
+.controls{display:flex;gap:0.5rem;padding:0.5rem 1.5rem;background:#13131e;border-bottom:1px solid #2a2a40;align-items:center;flex-wrap:wrap}
+.controls select{padding:0.3rem 0.6rem;background:#1a1a2e;border:1px solid #2a2a40;color:#ccc;border-radius:4px;font-size:0.8rem}
+.controls label{color:#888;font-size:0.78rem}
+.main{display:flex;gap:1rem;padding:1rem;flex-wrap:wrap}
+.card{background:#13131e;border:1px solid #2a2a40;border-radius:8px;padding:1rem;flex:1;min-width:300px}
+.card h2{font-size:0.9rem;color:#a29bfe;margin-bottom:0.5rem;border-bottom:1px solid #2a2a40;padding-bottom:0.5rem}
+.card .stat{display:flex;justify-content:space-between;padding:0.3rem 0;font-size:0.82rem}
+.card .stat .lbl{color:#888}
+.card .stat .val{color:#e0e0e0;font-weight:bold}
+.anomaly{background:#1a1a2e;border-left:3px solid #ff6b6b;padding:0.5rem;margin:0.3rem 0;font-size:0.78rem}
+.anomaly .title{color:#ff6b6b;font-weight:bold}
+.chart-wrap{background:#13131e;border:1px solid #2a2a40;border-radius:8px;padding:1rem;margin:1rem;flex:2;min-width:600px}
+.chart-wrap h2{font-size:0.9rem;color:#a29bfe;margin-bottom:0.5rem}
+#competitor-table{width:100%;border-collapse:collapse;font-size:0.78rem}
+#competitor-table th{color:#888;text-align:left;padding:0.4rem 0.3rem;border-bottom:1px solid #2a2a40}
+#competitor-table td{padding:0.4rem 0.3rem;border-bottom:1px solid #1a1a2e}
+#competitor-table tr:hover{background:#1a1a2e}
+.status-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:0.3rem}
+@media(max-width:768px){.main{flex-direction:column}.chart-wrap{min-width:auto}}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>📊 Social Tracker — Хедлайнеры</h1>
+  <div class="sub">Обновление 6 раз/день · <span id="competitorCount">72</span> конкурента · <span id="snapshotCount">...</span> снимков</div>
+</div>
+
+<div class="controls">
+  <label>Платформа:</label>
+  <select id="platformFilter" onchange="updateTable()">
+    <option value="all">Все</option>
+    <option value="youtube">YouTube</option>
+    <option value="telegram">Telegram</option>
+  </select>
+  <label>Сортировка:</label>
+  <select id="sortFilter" onchange="updateTable()">
+    <option value="subs">По подписчикам</option>
+    <option value="name">По имени</option>
+    <option value="activity">По активности</option>
+  </select>
+  <label>Поиск:</label>
+  <input type="text" id="searchInput" oninput="updateTable()" placeholder="Название канала..." style="background:#1a1a2e;border:1px solid #2a2a40;color:#ccc;padding:0.3rem 0.6rem;border-radius:4px;font-size:0.8rem">
+</div>
+
+<div class="main">
+  <div class="card">
+    <h2>📈 Общая статистика</h2>
+    <div class="stat"><span class="lbl">Компетиторов</span><span class="val" id="totalCompetitors">...</span></div>
+    <div class="stat"><span class="lbl">С YT данными</span><span class="val" id="ytCompetitors">...</span></div>
+    <div class="stat"><span class="lbl">Всего подписчиков YT</span><span class="val" id="totalYTSubs">...</span></div>
+    <div class="stat"><span class="lbl">С активным TG</span><span class="val" id="activeTG">...</span></div>
+    <div class="stat"><span class="lbl">Снимков в БД</span><span class="val" id="totalSnapshots">...</span></div>
+    <div class="stat"><span class="lbl">Аномалий (24ч)</span><span class="val" id="anomalyCount">...</span></div>
+  </div>
+
+  <div class="card">
+    <h2>⚠️ Последние аномалии</h2>
+    <div id="anomalyList">Загрузка...</div>
+  </div>
+</div>
+
+<div class="chart-wrap">
+  <h2>📈 Топ-10 по подписчикам</h2>
+  <canvas id="subsChart" height="250"></canvas>
+</div>
+
+<div class="chart-wrap">
+  <h2>📋 Все конкуренты</h2>
+  <div style="overflow-x:auto">
+    <table id="competitor-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Конкурент</th>
+          <th>YT подписчики</th>
+          <th>TG подписчики</th>
+          <th>TG ссылка</th>
+          <th>Соцсети</th>
+          <th>Активность</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+// Sample data — will be updated from API
+var competitors = [];
+var snapshots = [];
+var anomalies = [];
+
+function loadData() {
+  // In a real deployment, fetch from /api/social-stats
+  // For now, load from embedded JS data
+  competitors = [{"name": "Kirill Evans", "yt_subs": 433000, "tg_subs": 56600, "tg_link": "https://t.me/evans_crypto", "social": ["twitter", "vk"], "active": "2026-06"}, {"name": "RDeni (Ростик)", "yt_subs": 320000, "tg_subs": 120112, "tg_link": "https://t.me/crypto_rostik (120K)", "social": ["instagram"], "active": "2026-06"}, {"name": "PRO BLOCKCHAIN", "yt_subs": 232000, "tg_subs": 176791, "tg_link": "", "social": ["vk"], "active": "2026-06"}, {"name": "Хедлайнеры", "yt_subs": 330000, "tg_subs": 41548, "tg_link": "@nainspire (41.5K) + @headliners_bd + @headliners_traders_bot", "social": ["vk"], "active": "2026-06"}, {"name": "SLEZY SATOSHI", "yt_subs": 235000, "tg_subs": 128043, "tg_link": "@SleziSatoshi (128K)", "social": ["twitter", "instagram"], "active": "2026-06"}, {"name": "Roman Tomera", "yt_subs": 246000, "tg_subs": 45893, "tg_link": "CrypTomera (приватный, 45.8K)", "social": [], "active": "2026-06"}, {"name": "CRYPTUS", "yt_subs": 274000, "tg_subs": 0, "tg_link": "инвайт + @nikgrishunin", "social": [], "active": "2026-06"}, {"name": "Crypto Signals ©", "yt_subs": 0, "tg_subs": 228360, "tg_link": "@whalescryptovip", "social": [], "active": "2026-06"}, {"name": "Cryptology", "yt_subs": 125000, "tg_subs": 51255, "tg_link": "@CryptologyKey (51.2K)", "social": ["instagram"], "active": "2026-06"}, {"name": "Дневник активов", "yt_subs": 118000, "tg_subs": 42581, "tg_link": "@dnevnikaktivov (42.5K)", "social": [], "active": "2026-06"}, {"name": "CRYPTOR BLOG", "yt_subs": 151000, "tg_subs": 89, "tg_link": "@cryptor_blog (89)", "social": [], "active": "2026-06"}, {"name": "SerCrypto", "yt_subs": 119000, "tg_subs": 23828, "tg_link": "@SerCryptoSC (23.8K)", "social": [], "active": "2026-06"}, {"name": "Prometheus Crypto", "yt_subs": 95400, "tg_subs": 42378, "tg_link": "@Prometheus (536K!)", "social": [], "active": "2026-06"}, {"name": "CryptoCapo TG", "yt_subs": 0, "tg_subs": 119661, "tg_link": "@CryptoCapoTG", "social": [], "active": "2026-06"}, {"name": "CryptoInside", "yt_subs": 110000, "tg_subs": 0, "tg_link": "@crypt0inside (личный)", "social": [], "active": "2026-06"}, {"name": "Crypto Falcon", "yt_subs": 20000, "tg_subs": 81561, "tg_link": "@falconinvestors (81.5K!)", "social": [], "active": "2026-06"}, {"name": "Mamkin Trader", "yt_subs": 96700, "tg_subs": 0, "tg_link": "@Mamkin_Treyd, @NEWS_MT, @CryptoFLUD", "social": [], "active": "2026-06"}, {"name": "DOUBLETOP", "yt_subs": 89700, "tg_subs": 0, "tg_link": "@doubletop", "social": [], "active": "2026-06"}, {"name": "CryptoFateev", "yt_subs": 70900, "tg_subs": 7700, "tg_link": "@Cryptofateev (7.7K)", "social": [], "active": "2026-06"}, {"name": "Wyckoff Company", "yt_subs": 5500, "tg_subs": 70400, "tg_link": "@wyckoff_company (70.4K)", "social": [], "active": "2026-06"}, {"name": "Trader signals RU", "yt_subs": 0, "tg_subs": 44806, "tg_link": "@daytrader_signals", "social": [], "active": "2026-06"}, {"name": "Crypto Signal Hub", "yt_subs": 0, "tg_subs": 43286, "tg_link": "@wisesignal5", "social": [], "active": "2026-06"}, {"name": "Crypto Scalp Signals", "yt_subs": 0, "tg_subs": 37420, "tg_link": "@crypto_scalp_signals", "social": [], "active": "2026-06"}, {"name": "ProBoy", "yt_subs": 0, "tg_subs": 22088, "tg_link": "@proboyscalp", "social": [], "active": "2026-06"}, {"name": "Чат криптотрейдеров", "yt_subs": 0, "tg_subs": 17403, "tg_link": "@cscalp_crypto", "social": [], "active": "2026-06"}, {"name": "Сигналы МосБиржа", "yt_subs": 0, "tg_subs": 15486, "tg_link": "@signals_moex", "social": [], "active": "2026-06"}, {"name": "Bondar&CScalp", "yt_subs": 0, "tg_subs": 14840, "tg_link": "@cscalpofficial", "social": [], "active": "2026-06"}, {"name": "BREIDO Trade", "yt_subs": 0, "tg_subs": 9011, "tg_link": "@breidatrade", "social": [], "active": "2026-06"}, {"name": "Altcoin Trading Signals", "yt_subs": 0, "tg_subs": 7025, "tg_link": "", "social": [], "active": "2026-06"}, {"name": "ТАЙП", "yt_subs": 0, "tg_subs": 6497, "tg_link": "@taiptrade", "social": [], "active": "2026-06"}];
+  snapshots = [{"name": "Headliners", "platform": "youtube", "subs": 330000, "date": "2026-06-10"}, {"name": "RDeni (Ростик)", "platform": "youtube", "subs": 320000, "date": "2026-06-10"}, {"name": "Дневник активов", "platform": "youtube", "subs": 118000, "date": "2026-06-10"}, {"name": "Wyckoff Company", "platform": "youtube", "subs": 6010, "date": "2026-06-10"}, {"name": "SLEZY SATOSHI", "platform": "youtube", "subs": 235000, "date": "2026-06-10"}, {"name": "SerCrypto", "platform": "youtube", "subs": 119000, "date": "2026-06-10"}, {"name": "Roman Tomera", "platform": "youtube", "subs": 246000, "date": "2026-06-10"}, {"name": "RDeni", "platform": "youtube", "subs": 320000, "date": "2026-06-10"}, {"name": "Prometheus Crypto", "platform": "youtube", "subs": 95400, "date": "2026-06-10"}, {"name": "Mamkin Trader", "platform": "youtube", "subs": 96700, "date": "2026-06-10"}, {"name": "Kirill Evans", "platform": "youtube", "subs": 433000, "date": "2026-06-10"}, {"name": "Хедлайнеры", "platform": "youtube", "subs": 330000, "date": "2026-06-10"}, {"name": "CRYPTUS", "platform": "youtube", "subs": 274000, "date": "2026-06-10"}, {"name": "Cryptology", "platform": "youtube", "subs": 125000, "date": "2026-06-10"}, {"name": "CryptoInside", "platform": "youtube", "subs": 110000, "date": "2026-06-10"}, {"name": "CryptoFateev", "platform": "youtube", "subs": 70900, "date": "2026-06-10"}];
+  anomalies = [];
+  setTimeout(render, 100);
+      // Sample data for demo
+      competitors = [
+        {name:'Kirill Evans',yt_subs:433000,tg_subs:56600,tg_link:'@evans_crypto',social:['twitter','vk'],active:'2025-10'},
+        {name:'PRO BLOCKCHAIN',yt_subs:232000,tg_subs:176800,tg_link:'@Pro_Blockchain',social:['instagram'],active:'2026-06'},
+        {name:'RDeni',yt_subs:320000,tg_subs:120000,tg_link:'@crypto_rostik',social:['instagram'],active:'2026-06'},
+        {name:'Roman Tomera',yt_subs:246000,tg_subs:45800,tg_link:'@CrypTomera',social:[],active:'2026-06'},
+        {name:'SLEZY SATOSHI',yt_subs:235000,tg_subs:128000,tg_link:'@SleziSatoshi',social:[],active:'2026-06'},
+        {name:'CRYPTUS',yt_subs:274000,tg_subs:0,tg_link:'—',social:[],active:'?'},
+        {name:'Crypto Falcon',yt_subs:20000,tg_subs:81500,tg_link:'@falconinvestors',social:['instagram'],active:'2026-06'},
+        {name:'Cryptology',yt_subs:125000,tg_subs:51200,tg_link:'@CryptologyKey',social:['instagram'],active:'2026-06'},
+        {name:'Хедлайнеры',yt_subs:330000,tg_subs:41548,tg_link:'@nainspire',social:[],active:'2026-06'},
+      ];
+      snapshots = competitors.map(c => ({name:c.name,subs:c.yt_subs,platform:'youtube'}));
+      anomalies = [{name:'Kirill Evans',metric:'tg_subs',reason:'Канал неактивен 8 месяцев'}];
+      render();
+}
+
+function render() {
+  document.getElementById('competitorCount').textContent = competitors.length;
+  document.getElementById('snapshotCount').textContent = snapshots.length;
+  document.getElementById('totalCompetitors').textContent = competitors.length;
+  
+  var yt = competitors.filter(c => c.yt_subs > 0);
+  document.getElementById('ytCompetitors').textContent = yt.length;
+  
+  var totalYT = yt.reduce((s,c) => s + c.yt_subs, 0);
+  document.getElementById('totalYTSubs').textContent = totalYT.toLocaleString();
+  
+  var activeTG = competitors.filter(c => c.tg_subs > 0).length;
+  document.getElementById('activeTG').textContent = activeTG;
+  
+  document.getElementById('totalSnapshots').textContent = snapshots.length;
+  document.getElementById('anomalyCount').textContent = anomalies.length;
+  
+  // Anomalies
+  if (anomalies.length) {
+    document.getElementById('anomalyList').innerHTML = anomalies.map(a => 
+      `<div class="anomaly"><div class="title">⚠️ ${a.name}</div>${a.reason || a.metric}: ${a.value || ''}</div>`
+    ).join('');
+  } else {
+    document.getElementById('anomalyList').innerHTML = '<div style="color:#555;font-size:0.82rem">Нет аномалий за последние 24ч</div>';
+  }
+  
+  // Chart
+  var top = [...competitors].sort((a,b) => (b.yt_subs||0) - (a.yt_subs||0)).slice(0,10);
+  new Chart(document.getElementById('subsChart'), {
+    type: 'bar',
+    data: {
+      labels: top.map(c => c.name.substring(0,15)),
+      datasets: [{
+        label: 'YT подписчики',
+        data: top.map(c => c.yt_subs),
+        backgroundColor: '#c084fc88',
+        borderColor: '#c084fc',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { labels: { color: '#888' } } },
+      scales: {
+        y: { ticks: { color: '#666' }, grid: { color: '#1a1a2e' } },
+        x: { ticks: { color: '#888' } }
+      }
+    }
+  });
+  
+  updateTable();
+}
+
+function updateTable() {
+  var search = document.getElementById('searchInput').value.toLowerCase();
+  var platform = document.getElementById('platformFilter').value;
+  var sort = document.getElementById('sortFilter').value;
+  
+  var filtered = competitors.filter(c => 
+    c.name.toLowerCase().includes(search)
+  );
+  
+  if (sort === 'subs') filtered.sort((a,b) => (b.yt_subs||0) - (a.yt_subs||0));
+  else if (sort === 'name') filtered.sort((a,b) => a.name.localeCompare(b.name));
+  else if (sort === 'activity') filtered.sort((a,b) => (b.active||'').localeCompare(a.active||''));
+  
+  document.getElementById('tableBody').innerHTML = filtered.map((c,i) => {
+    var socialIcons = (c.social||[]).map(s => {
+      var icons = {'twitter':'𝕏','instagram':'📷','vk':'📱','tiktok':'🎵'};
+      return icons[s] || s;
+    }).join(' ');
+    var status = c.active === '2026-06' ? '<span class="status-dot" style="background:#00d4aa"></span>активен'
+      : c.active === '2025-10' ? '<span class="status-dot" style="background:#ffd93d"></span>затухает'
+      : '<span class="status-dot" style="background:#ff6b6b"></span>неактивен';
+    return `<tr>
+      <td>${i+1}</td>
+      <td><strong>${c.name.substring(0,25)}</strong></td>
+      <td>${(c.yt_subs||0).toLocaleString()}</td>
+      <td>${(c.tg_subs||0).toLocaleString()}</td>
+      <td style="color:#a29bfe">${c.tg_link||'—'}</td>
+      <td>${socialIcons}</td>
+      <td>${status}</td>
+    </tr>`;
+  }).join('');
+}
+
+loadData();
+</script>
+</body>
+</html>
