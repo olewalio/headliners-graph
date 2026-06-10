@@ -55,7 +55,6 @@ graph TD
     Prometheus Bitcoin["Prometheus Bitcoin"]
     Prometheus Crypto["Prometheus Crypto"]
     RDeni["RDeni"]
-    RDeni["RDeni"]
     Roman Tomera["Roman Tomera"]
     SLEZY SATOSHI["SLEZY SATOSHI"]
     SerCrypto["SerCrypto"]
@@ -127,7 +126,6 @@ graph TD
     Headliners -->|competitor| Cryptology
     Headliners -->|competitor| ProBoy
     Headliners -->|competitor| Prometheus Crypto
-    Headliners -->|competitor| RDeni
     Headliners -->|competitor| SerCrypto
     Headliners -->|competitor| SkalpingDIGAHKA
     Headliners -->|competitor| Хедлайнеры
@@ -194,7 +192,6 @@ graph TD
     class ProBoy Scalp competitor
     class Prometheus Bitcoin competitor
     class Prometheus Crypto competitor
-    class RDeni competitor
     class RDeni competitor
     class Roman Tomera competitor
     class SLEZY SATOSHI competitor
